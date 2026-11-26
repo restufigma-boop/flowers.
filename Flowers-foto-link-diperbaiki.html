@@ -1,0 +1,2693 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flowers. — Hadiah Bunga Digital &amp; Kenangan Abadi</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Editorial & Handwritten Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- QR Code Generator Library (Client-Side Pure JS) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            editorial: ['"Instrument Serif"', '"Playfair Display"', 'Georgia', 'serif'],
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            hand: ['"Caveat"', 'cursive'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            paper: '#FAF7F2',
+            paperDark: '#F2ECE1',
+            ink: '#231F1E',
+            muted: '#6E655F',
+            rosewood: '#8C3F47',
+            blush: '#F4DFDF',
+            sage: '#5E715D',
+            gold: '#B8924A',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Tekstur Kertas Editorial Halus */
+    body {
+      background-color: #FAF7F2;
+      color: #231F1E;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(rgba(140, 63, 71, 0.045) 1px, transparent 0),
+        radial-gradient(rgba(94, 113, 93, 0.04) 1px, transparent 0);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
+    }
+
+    .paper-sheet {
+      background: linear-gradient(165deg, #FFFFFF 0%, #FAF7F2 65%, #F4EDE2 100%);
+      box-shadow:
+        0 24px 60px -15px rgba(35, 31, 30, 0.09),
+        0 4px 16px -2px rgba(140, 63, 71, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    /* Animasi Mekar Organik */
+    @keyframes unfurlBloom {
+      0% {
+        opacity: 0;
+        transform: scale(0.1) rotate(-22deg) translateY(30px);
+      }
+      60% {
+        opacity: 1;
+        transform: scale(1.06) rotate(3deg) translateY(-3px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg) translateY(0);
+      }
+    }
+
+    @keyframes gentleBreeze {
+      0%, 100% { transform: rotate(-1.4deg); }
+      50% { transform: rotate(1.4deg); }
+    }
+
+    .stem-group {
+      cursor: grab;
+      transition: filter 0.2s ease;
+    }
+    .stem-group:active {
+      cursor: grabbing;
+    }
+    .stem-group:hover {
+      filter: drop-shadow(0 6px 12px rgba(140, 63, 71, 0.22));
+    }
+
+    .bloom-trigger .flower-crown {
+      transform-origin: center center;
+      animation: unfurlBloom 1.35s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    }
+
+    .bloom-d0 .flower-crown { animation-delay: 0.05s; }
+    .bloom-d1 .flower-crown { animation-delay: 0.16s; }
+    .bloom-d2 .flower-crown { animation-delay: 0.27s; }
+    .bloom-d3 .flower-crown { animation-delay: 0.38s; }
+    .bloom-d4 .flower-crown { animation-delay: 0.49s; }
+    .bloom-d5 .flower-crown { animation-delay: 0.60s; }
+    .bloom-d6 .flower-crown { animation-delay: 0.71s; }
+    .bloom-d7 .flower-crown { animation-delay: 0.82s; }
+    .bloom-d8 .flower-crown { animation-delay: 0.93s; }
+    .bloom-d9 .flower-crown { animation-delay: 1.04s; }
+    .bloom-d10 .flower-crown { animation-delay: 1.15s; }
+
+    /* Kelopak Ambient Melayang */
+    .ambient-petal {
+      position: fixed;
+      top: -40px;
+      pointer-events: none;
+      z-index: 45;
+      animation: floatDown linear forwards;
+    }
+
+    @keyframes floatDown {
+      0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+      12% { opacity: 0.85; }
+      50% { transform: translateY(52vh) translateX(40px) rotate(190deg); }
+      88% { opacity: 0.8; }
+      100% {
+        transform: translateY(108vh) translateX(-30px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Polaroid Card */
+    .polaroid-frame {
+      background: #FFFFFF;
+      padding: 10px 10px 32px 10px;
+      box-shadow: 0 12px 28px -6px rgba(35, 31, 30, 0.16), 0 2px 6px rgba(0,0,0,0.06);
+      border: 1px solid rgba(35, 31, 30, 0.06);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+    }
+    .polaroid-frame:hover {
+      transform: scale(1.04) rotate(0deg) !important;
+      z-index: 20;
+      box-shadow: 0 20px 40px -8px rgba(35, 31, 30, 0.22);
+    }
+
+    /* Segel Lilin (Wax Seal) */
+    .wax-seal {
+      background: radial-gradient(circle at 35% 30%, #B8525C, #7A2B33 70%, #571B21 100%);
+      box-shadow:
+        0 10px 25px rgba(122, 43, 51, 0.38),
+        inset 0 2px 4px rgba(255, 255, 255, 0.35),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #FAF7F2; }
+    ::-webkit-scrollbar-thumb { background: #D8CBB8; border-radius: 9999px; }
+  </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col selection:bg-rose-200 selection:text-rosewood">
+
+  <!-- Container Kelopak Melayang -->
+  <div id="petal-layer" aria-hidden="true"></div>
+
+  <!-- Notifikasi Toast Pengganti alert() -->
+  <div id="toast-box" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] pointer-events-none opacity-0 translate-y-4 transition-all duration-300">
+    <div class="bg-ink/95 text-paper px-5 py-3 rounded-full shadow-2xl border border-white/10 flex items-center gap-2.5 text-xs sm:text-sm font-medium">
+      <span id="toast-emoji">🌸</span>
+      <span id="toast-text">Tersimpan</span>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- EDITORIAL HEADER & NAVIGATION                                           -->
+  <!-- ======================================================================= -->
+  <header id="main-header" class="sticky top-0 z-40 bg-paper/85 backdrop-blur-md border-b border-stone-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between gap-2">
+      
+      <!-- Brand Logo: Flowers. -->
+      <button type="button" onclick="switchTab('studio')" class="flex items-baseline gap-2.5 text-left group focus:outline-none">
+        <span class="font-editorial text-3xl sm:text-4xl tracking-tight text-ink">
+          Flowers<span class="text-rosewood">.</span>
+        </span>
+        <span class="hidden sm:inline-block text-xs text-muted font-medium tracking-wide">
+          Hadiah Bunga Digital
+        </span>
+      </button>
+
+      <!-- Navigasi Tab Utama -->
+      <nav class="flex items-center gap-1 sm:gap-1.5 bg-paperDark/80 p-1 rounded-full border border-stone-200/80 overflow-x-auto max-w-[65vw] sm:max-w-none">
+        <button type="button" data-tab="studio" onclick="switchTab('studio')"
+          class="nav-tab-btn px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition bg-white text-ink shadow-xs">
+          Rangkai Hadiah
+        </button>
+        <button type="button" data-tab="catalog" onclick="switchTab('catalog')"
+          class="nav-tab-btn px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition text-muted hover:text-ink">
+          Katalog Tema
+        </button>
+        <button type="button" data-tab="photobooth" onclick="switchTab('photobooth')"
+          class="nav-tab-btn px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition text-muted hover:text-ink">
+          Photobooth
+        </button>
+        <button type="button" data-tab="garden" onclick="switchTab('garden')"
+          class="nav-tab-btn px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition text-muted hover:text-ink flex items-center gap-1">
+          <span>Tamanku</span>
+          <span id="garden-badge" class="text-[10px] bg-rosewood text-white px-1.5 py-0.2 rounded-full">0</span>
+        </button>
+      </nav>
+
+      <!-- Tombol Pratinjau Penerima -->
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="openRecipientFullscreen(true)"
+          class="px-3.5 sm:px-4 py-2 rounded-full bg-ink hover:bg-rosewood text-paper text-xs sm:text-sm font-medium transition shadow-sm flex items-center gap-1.5 active:scale-95">
+          <span>✨</span>
+          <span class="hidden md:inline">Pratinjau Penerima</span>
+          <span class="md:hidden">Buka</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================= -->
+  <!-- TAB 1: STUDIO RANGKAI HADIAH (COMPOSER)                                 -->
+  <!-- ======================================================================= -->
+  <main id="tab-studio" class="tab-panel flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-9">
+    
+    <!-- Intro Editorial Singkat -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 mb-7 border-b border-stone-200/80">
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.22em] text-rosewood font-semibold mb-1">Studio Botani &amp; Kenangan</p>
+        <h1 class="font-editorial text-4xl sm:text-5xl text-ink leading-none">
+          Rangkai buket yang <span class="italic text-rosewood">tak pernah layu.</span>
+        </h1>
+      </div>
+      <p class="text-xs sm:text-sm text-muted max-w-md leading-relaxed">
+        Susun tangkai bunga pilihanmu, sisipkan foto Polaroid, melodi kotak musik, dan surat tulisan tangan dalam satu tautan abadi.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- KOLOM KIRI: 4 LANGKAH KUSTOMISASI (7 Kolom) -->
+      <div class="lg:col-span-7 space-y-6">
+
+        <!-- LANGKAH 1: PEMBUKA & KUNCI KEJUTAN -->
+        <section class="paper-sheet rounded-3xl p-5 sm:p-7 border border-stone-200/80">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-rosewood">01 / Pengalaman Awal</span>
+              <h2 class="font-editorial text-2xl sm:text-3xl text-ink">Cara Membuka &amp; Kunci Kejutan</h2>
+            </div>
+          </div>
+
+          <!-- Pilihan Cara Membuka (Openings) -->
+          <label class="block text-xs font-semibold text-muted mb-2">Pilih Gaya Pembuka Hadiah:</label>
+          <div id="opening-options-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-5">
+            <!-- Diisi JS -->
+          </div>
+
+          <!-- Pilihan Mini-Game Kunci (Unlock Mechanic) -->
+          <label class="block text-xs font-semibold text-muted mb-2">Kunci Interaktif Sebelum Mekar:</label>
+          <div id="lock-options-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <!-- Diisi JS -->
+          </div>
+        </section>
+
+        <!-- LANGKAH 2: RANGKAI BUNGA & KERTAS PEMBUNGKUS -->
+        <section class="paper-sheet rounded-3xl p-5 sm:p-7 border border-stone-200/80">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-rosewood">02 / Komposisi Botani</span>
+              <h2 class="font-editorial text-2xl sm:text-3xl text-ink">Pilih Bunga &amp; Pembungkus</h2>
+            </div>
+            <div class="flex items-center gap-2">
+              <span id="stem-count-badge" class="text-xs font-semibold px-3 py-1 rounded-full bg-blush text-rosewood">
+                6 / 11 Tangkai
+              </span>
+              <button type="button" onclick="autoArrangeBouquet()" class="text-xs bg-paperDark hover:bg-stone-200/70 text-ink px-3 py-1.5 rounded-full font-medium transition">
+                ✨ Acak Estetik
+              </button>
+            </div>
+          </div>
+
+          <!-- Katalog Bunga -->
+          <div id="botanical-picker-grid" class="grid grid-cols-3 sm:grid-cols-3 gap-2.5 mb-4">
+            <!-- Diisi JS -->
+          </div>
+
+          <!-- Daftar Tangkai Aktif -->
+          <div class="bg-paper rounded-2xl p-3.5 border border-stone-200/70 mb-5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-semibold text-muted">Tangkai di dalam buket (klik bunga di kanvas untuk menggeser):</span>
+              <button type="button" onclick="resetBouquetStems()" class="text-[11px] text-rosewood hover:underline font-medium">Reset</button>
+            </div>
+            <div id="active-stems-chips" class="flex flex-wrap gap-1.5">
+              <!-- Chips tangkai -->
+            </div>
+          </div>
+
+          <!-- Kertas Pembungkus & Pita -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-stone-200/70">
+            <div>
+              <label class="block text-xs font-semibold text-muted mb-2">Kertas Pembungkus:</label>
+              <div id="wrap-picker-grid" class="grid grid-cols-3 gap-2">
+                <!-- Diisi JS -->
+              </div>
+            </div>
+            <div>
+              <label for="input-tag-text" class="block text-xs font-semibold text-muted mb-2">Label Tag Gantung pada Pita:</label>
+              <input type="text" id="input-tag-text" maxlength="24" placeholder="Untukmu, Selamanya..."
+                class="w-full px-3.5 py-2.5 rounded-xl bg-paper border border-stone-200 text-sm font-hand text-lg focus:outline-none focus:border-rosewood"
+                oninput="handleFormChange()" />
+              <p class="text-[11px] text-muted mt-1.5">Muncul di kartu kecil yang terikat pada pita buket.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- LANGKAH 3: SISIPKAN KENANGAN (SURAT, POLAROID, MUSIK, SUARA) -->
+        <section class="paper-sheet rounded-3xl p-5 sm:p-7 border border-stone-200/80">
+          <div class="mb-4">
+            <span class="text-[11px] font-bold uppercase tracking-widest text-rosewood">03 / Kapsul Kenangan</span>
+            <h2 class="font-editorial text-2xl sm:text-3xl text-ink">Surat, Foto Polaroid &amp; Melodi</h2>
+          </div>
+
+          <!-- Sub-Tab Kenangan -->
+          <div class="flex gap-1.5 bg-paperDark p-1 rounded-2xl mb-5 overflow-x-auto">
+            <button type="button" onclick="switchKeepsakeSubtab('letter')" data-ksub="letter"
+              class="ksub-btn flex-1 py-2 px-3 rounded-xl text-xs font-semibold bg-white text-ink shadow-2xs whitespace-nowrap">
+              ✉️ Surat Ucapan
+            </button>
+            <button type="button" onclick="switchKeepsakeSubtab('polaroid')" data-ksub="polaroid"
+              class="ksub-btn flex-1 py-2 px-3 rounded-xl text-xs font-semibold text-muted hover:text-ink whitespace-nowrap">
+              📸 Foto Polaroid (<span id="polaroid-count-label">1</span>/3)
+            </button>
+            <button type="button" onclick="switchKeepsakeSubtab('audio')" data-ksub="audio"
+              class="ksub-btn flex-1 py-2 px-3 rounded-xl text-xs font-semibold text-muted hover:text-ink whitespace-nowrap">
+              🎵 Melodi &amp; Suara
+            </button>
+          </div>
+
+          <!-- SUBTAB A: SURAT UCAPAN -->
+          <div id="ksub-letter" class="ksub-panel space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs font-medium text-muted">Butuh inspirasi kata-kata?</span>
+              <div class="flex flex-wrap gap-1.5">
+                <button type="button" onclick="applyMoodPreset('romantic')" class="text-[11px] px-2.5 py-1 rounded-full bg-blush/80 hover:bg-blush text-rosewood font-medium">Romantis</button>
+                <button type="button" onclick="applyMoodPreset('birthday')" class="text-[11px] px-2.5 py-1 rounded-full bg-amber-100/80 hover:bg-amber-100 text-amber-900 font-medium">Ulang Tahun</button>
+                <button type="button" onclick="applyMoodPreset('ldr')" class="text-[11px] px-2.5 py-1 rounded-full bg-emerald-100/70 hover:bg-emerald-100 text-emerald-900 font-medium">Kangen / LDR</button>
+                <button type="button" onclick="applyMoodPreset('apology')" class="text-[11px] px-2.5 py-1 rounded-full bg-stone-200/70 hover:bg-stone-200 text-ink font-medium">Minta Maaf</button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-muted mb-1">Untuk (Penerima)</label>
+                <input type="text" id="input-to" maxlength="40" placeholder="Nama penerima..."
+                  class="w-full px-3.5 py-2.5 rounded-xl bg-paper border border-stone-200 text-sm focus:outline-none focus:border-rosewood"
+                  oninput="handleFormChange()" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-muted mb-1">Dari (Pengirim)</label>
+                <input type="text" id="input-from" maxlength="40" placeholder="Namamu..."
+                  class="w-full px-3.5 py-2.5 rounded-xl bg-paper border border-stone-200 text-sm focus:outline-none focus:border-rosewood"
+                  oninput="handleFormChange()" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-muted mb-1">Judul Singkat Surat</label>
+              <input type="text" id="input-title" maxlength="60" placeholder="Contoh: Sebuah bunga kecil untuk hari yang indah..."
+                class="w-full px-3.5 py-2.5 rounded-xl bg-paper border border-stone-200 font-editorial text-xl focus:outline-none focus:border-rosewood"
+                oninput="handleFormChange()" />
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-1">
+                <label class="block text-xs font-semibold text-muted">Isi Surat</label>
+                <span id="note-length" class="text-[11px] text-muted">0 / 400</span>
+              </div>
+              <textarea id="input-note" rows="4" maxlength="400" placeholder="Tulis pesan tulusmu di sini..."
+                class="w-full px-3.5 py-2.5 rounded-xl bg-paper border border-stone-200 text-sm leading-relaxed focus:outline-none focus:border-rosewood resize-none"
+                oninput="handleFormChange()"></textarea>
+            </div>
+          </div>
+
+          <!-- SUBTAB B: FOTO POLAROID -->
+          <div id="ksub-polaroid" class="ksub-panel hidden space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 bg-paper p-3.5 rounded-2xl border border-stone-200/80">
+              <div>
+                <p class="text-xs font-semibold text-ink">Unggah Foto Kenangan (Maks. 3 Foto)</p>
+                <p class="text-[11px] text-muted">Foto dibingkai dalam kartu Polaroid vintage dengan tulisan tangan.</p>
+              </div>
+              <label class="cursor-pointer px-4 py-2 rounded-full bg-ink hover:bg-rosewood text-paper text-xs font-semibold transition shadow-xs">
+                + Pilih Foto
+                <input type="file" id="polaroid-upload-input" accept="image/*" multiple class="hidden" onchange="handlePolaroidUpload(event)" />
+              </label>
+            </div>
+
+            <div id="polaroid-editor-list" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <!-- Kartu polaroid yang bisa diedit caption-nya -->
+            </div>
+          </div>
+
+          <!-- SUBTAB C: MELODI KOTAK MUSIK & PESAN SUARA -->
+          <div id="ksub-audio" class="ksub-panel hidden space-y-5">
+            <div>
+              <label class="block text-xs font-semibold text-muted mb-2">Pilih Melodi Kotak Musik (Web Audio Synthesizer):</label>
+              <div id="melody-options-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <!-- Pilihan melodi diisi JS -->
+              </div>
+            </div>
+
+            <!-- Perekam Pesan Suara (Voice Note) -->
+            <div class="bg-paper rounded-2xl p-4 border border-stone-200/80">
+              <div class="flex items-center justify-between mb-2">
+                <div>
+                  <h4 class="text-xs font-bold text-ink">Pesan Suara (Voice Note Opsional)</h4>
+                  <p class="text-[11px] text-muted">Rekam suaramu hingga 15 detik untuk diputar penerima.</p>
+                </div>
+                <span id="vn-status-badge" class="text-[11px] px-2.5 py-0.5 rounded-full bg-stone-200/70 text-muted font-medium">Belum ada</span>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2.5 mt-3">
+                <button type="button" id="btn-record-vn" onclick="toggleVoiceRecording()"
+                  class="px-4 py-2 rounded-full bg-rosewood hover:bg-[#733239] text-white text-xs font-semibold flex items-center gap-1.5 transition">
+                  <span id="rec-dot" class="w-2 h-2 rounded-full bg-white"></span>
+                  <span id="rec-btn-text">Mulai Rekam Suara</span>
+                </button>
+
+                <button type="button" id="btn-play-vn" onclick="playRecordedVoiceNote()" disabled
+                  class="px-4 py-2 rounded-full bg-white border border-stone-200 text-ink disabled:opacity-40 text-xs font-semibold flex items-center gap-1.5 transition">
+                  <span>▶️</span> Putar Rekaman
+                </button>
+
+                <button type="button" id="btn-clear-vn" onclick="clearVoiceNote()" class="hidden text-xs text-muted hover:text-rosewood underline">
+                  Hapus
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- LANGKAH 4: BAGIKAN TAUTAN & QR CODE -->
+        <section class="paper-sheet rounded-3xl p-5 sm:p-7 border border-rosewood/30 bg-gradient-to-br from-white via-paper to-blush/40">
+          <div class="flex flex-col sm:flex-row items-center gap-5">
+            <!-- QR Code Otomatis -->
+            <div class="bg-white p-3 rounded-2xl border border-stone-200 shadow-xs shrink-0 text-center">
+              <div id="qrcode-canvas" class="w-[116px] h-[116px] flex items-center justify-center"></div>
+              <span class="block text-[10px] font-semibold text-muted mt-1.5 tracking-wide">Pindai QR Hadiah</span>
+            </div>
+
+            <!-- Tombol Bagikan -->
+            <div class="flex-1 text-center sm:text-left">
+              <span class="text-[11px] font-bold uppercase tracking-widest text-rosewood">04 / Siap Dikirim</span>
+              <h2 class="font-editorial text-2xl sm:text-3xl text-ink mb-1.5">Bagikan Tautan Hadiah Abadi</h2>
+              <p class="text-xs text-muted leading-relaxed mb-4">
+                Tautan ini menyimpan susunan bunga, pembuka kejutan, surat, dan melodi pilihanmu. Kirimkan lewat WhatsApp, Instagram DM, atau cetak QR Code-nya.
+              </p>
+
+              <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
+                <button type="button" onclick="copyGiftURL()"
+                  class="px-5 py-3 rounded-full bg-rosewood hover:bg-[#733239] text-white text-xs sm:text-sm font-semibold shadow-md shadow-rosewood/20 transition active:scale-95 flex items-center gap-2">
+                  <span>🔗</span> Salin Link Hadiah
+                </button>
+
+                <button type="button" onclick="copyWhatsAppText()"
+                  class="px-4 py-3 rounded-full bg-white hover:bg-stone-50 text-ink border border-stone-200 text-xs sm:text-sm font-semibold transition active:scale-95 flex items-center gap-2">
+                  <span>💌</span> Salin Pesan + Link
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- KOLOM KANAN: KANVAS BUKET INTERAKTIF & PRATINJAU LANGSUNG (5 Kolom) -->
+      <div class="lg:col-span-5 lg:sticky lg:top-22 space-y-4">
+        <div class="paper-sheet rounded-[2rem] p-5 sm:p-6 border border-stone-200/90 relative overflow-hidden">
+          
+          <!-- Bar Atas Kanvas -->
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-sage animate-pulse"></span>
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-muted">Kanvas Buket Interaktif</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button type="button" onclick="replayStudioBloom()"
+                class="text-xs px-3 py-1.5 rounded-full bg-paper hover:bg-blush/60 text-ink border border-stone-200/80 font-medium transition">
+                🌸 Mekarkan
+              </button>
+            </div>
+          </div>
+
+          <p class="text-[11px] text-muted text-center mb-1">
+            Tip: Geser kepala bunga di kanvas untuk mengatur posisi tangkai
+          </p>
+
+          <!-- SVG BOUQUET STAGE (Draggable Stems) -->
+          <div id="studio-bouquet-wrapper" class="relative w-full aspect-[4/4.3] max-w-[380px] mx-auto select-none bloom-trigger">
+            <!-- SVG Dirender oleh JS -->
+          </div>
+
+          <!-- Kotak Musik Mini di Studio -->
+          <div class="mt-2 pt-3 border-t border-stone-200/70 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <button type="button" onclick="toggleMelodyPreview()" id="studio-music-btn"
+                class="w-9 h-9 rounded-full bg-ink text-paper flex items-center justify-center text-xs shrink-0 hover:bg-rosewood transition">
+                ▶️
+              </button>
+              <div class="min-w-0">
+                <p class="text-xs font-semibold text-ink truncate" id="studio-melody-name">Scott Street × Nostalgia</p>
+                <p class="text-[11px] text-muted truncate">Ketuk untuk mendengar kotak musik</p>
+              </div>
+            </div>
+            <span id="studio-opening-badge" class="text-[11px] font-medium px-2.5 py-1 rounded-full bg-paperDark text-ink shrink-0">
+              Segel Lilin
+            </span>
+          </div>
+
+          <!-- Pratinjau Kartu Surat & Polaroid Mini -->
+          <div class="mt-4 bg-white/90 rounded-2xl p-4 border border-stone-200/70 text-center">
+            <p class="font-editorial italic text-xl text-rosewood" id="studio-card-title">
+              Sebuah bunga kecil untuk hari yang indah
+            </p>
+            <p class="text-xs sm:text-sm text-ink/85 leading-relaxed mt-1.5 whitespace-pre-line line-clamp-4" id="studio-card-note">
+              Semoga setiap kelopak yang mekar di sini mengingatkanmu betapa berharganya dirimu. Terima kasih sudah hadir dan membuat hariku selalu hangat.
+            </p>
+            <div class="mt-3 pt-2 border-t border-stone-100 flex items-center justify-between text-xs text-muted">
+              <span>Untuk: <strong class="text-ink" id="studio-card-to">Kamu</strong></span>
+              <span>Dari: <strong class="text-rosewood font-hand text-base" id="studio-card-from">Seseorang</strong></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- TAB 2: KATALOG TEMA & PEMBUKA (OPENINGS & WORLDS GALLERY)               -->
+  <!-- ======================================================================= -->
+  <section id="tab-catalog" class="tab-panel hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-10">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-rosewood font-semibold mb-2">Koleksi Pengalaman Interaktif</p>
+      <h2 class="font-editorial text-4xl sm:text-5xl text-ink">Pilih Dunia &amp; Cara Membuka Hadiah</h2>
+      <p class="text-xs sm:text-sm text-muted mt-2">
+        Setiap tema menghadirkan suasana dan interaksi unik saat penerima membuka tautan bungamu. Klik salah satu untuk langsung mencobanya.
+      </p>
+    </div>
+
+    <div id="catalog-showcase-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Kartu Tema Diisi Dinamis oleh JS -->
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- TAB 3: VINTAGE PHOTOBOOTH STUDIO (FREE PHOTO STRIP MAKER)               -->
+  <!-- ======================================================================= -->
+  <section id="tab-photobooth" class="tab-panel hidden flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 mb-8 border-b border-stone-200/80">
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.22em] text-rosewood font-semibold mb-1">Vintage Photo Strip</p>
+        <h2 class="font-editorial text-4xl sm:text-5xl text-ink">Photobooth Klasik <span class="italic text-rosewood">&amp; Botani</span></h2>
+      </div>
+      <p class="text-xs sm:text-sm text-muted max-w-md">
+        Ambil foto lewat kamera atau unggah 3 foto favoritmu, pilih filter film analog, dan unduh hasil strip fotonya secara gratis.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Kontrol Photobooth -->
+      <div class="lg:col-span-6 paper-sheet rounded-3xl p-5 sm:p-7 border border-stone-200/80 space-y-5">
+        
+        <!-- Sumber Foto: Kamera atau Upload -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-rosewood mb-2.5">1. Ambil atau Unggah Foto (3 Frame)</label>
+          <div class="flex flex-wrap gap-2.5">
+            <button type="button" onclick="startPhotoboothCamera()" id="btn-start-cam"
+              class="px-4 py-2.5 rounded-full bg-ink hover:bg-rosewood text-paper text-xs font-semibold transition flex items-center gap-2">
+              <span>📷</span> Buka Kamera
+            </button>
+
+            <label class="cursor-pointer px-4 py-2.5 rounded-full bg-white hover:bg-stone-50 text-ink border border-stone-200 text-xs font-semibold transition flex items-center gap-2">
+              <span>🖼️</span> Unggah Foto dari Galeri
+              <input type="file" accept="image/*" multiple class="hidden" onchange="handlePhotoboothUpload(event)" />
+            </label>
+
+            <button type="button" onclick="fillSampleBoothPhotos()"
+              class="px-3.5 py-2.5 rounded-full bg-paperDark hover:bg-stone-200 text-ink text-xs font-medium transition">
+              ✨ Isi Contoh Estetik
+            </button>
+          </div>
+
+          <!-- Area Live Webcam (Tersembunyi sampai diaktifkan) -->
+          <div id="webcam-box" class="hidden mt-4 bg-black rounded-2xl overflow-hidden relative aspect-[4/3]">
+            <video id="booth-video" autoplay playsinline class="w-full h-full object-cover scale-x-[-1]"></video>
+            <div id="booth-countdown" class="hidden absolute inset-0 flex items-center justify-center bg-black/40 text-white font-editorial text-7xl">3</div>
+            <div class="absolute bottom-3 inset-x-0 flex justify-center gap-3">
+              <button type="button" onclick="captureBoothSequence()"
+                class="px-5 py-2.5 rounded-full bg-rosewood text-white text-xs font-bold shadow-lg">
+                📸 Jepret 3 Foto Beruntun
+              </button>
+              <button type="button" onclick="stopPhotoboothCamera()"
+                class="px-4 py-2.5 rounded-full bg-white/90 text-ink text-xs font-semibold">
+                Tutup
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pilih Filter Film -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-rosewood mb-2">2. Filter Film Analog</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <button type="button" onclick="setBoothFilter('warm')" data-bfilter="warm" class="bfilter-btn py-2 px-3 rounded-xl border border-rosewood bg-blush/50 text-xs font-semibold text-ink">Warm Kodak</button>
+            <button type="button" onclick="setBoothFilter('bw')" data-bfilter="bw" class="bfilter-btn py-2 px-3 rounded-xl border border-stone-200 bg-paper text-xs font-semibold text-muted">Noir B&amp;W</button>
+            <button type="button" onclick="setBoothFilter('sepia')" data-bfilter="sepia" class="bfilter-btn py-2 px-3 rounded-xl border border-stone-200 bg-paper text-xs font-semibold text-muted">Vintage Sepia</button>
+            <button type="button" onclick="setBoothFilter('rose')" data-bfilter="rose" class="bfilter-btn py-2 px-3 rounded-xl border border-stone-200 bg-paper text-xs font-semibold text-muted">Soft Rosé</button>
+          </div>
+        </div>
+
+        <!-- Warna Bingkai & Teks Bawah Strip -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-rosewood mb-2">3. Warna Kertas Strip</label>
+            <div class="flex gap-2">
+              <button type="button" onclick="setBoothPaper('#FAF7F2', '#231F1E')" class="w-8 h-8 rounded-full bg-[#FAF7F2] border-2 border-rosewood shadow-xs" title="Krem Editorial"></button>
+              <button type="button" onclick="setBoothPaper('#1E1B1C', '#FAF7F2')" class="w-8 h-8 rounded-full bg-[#1E1B1C] border border-stone-300 shadow-xs" title="Hitam Klasik"></button>
+              <button type="button" onclick="setBoothPaper('#F5E1E4', '#5C262C')" class="w-8 h-8 rounded-full bg-[#F5E1E4] border border-stone-300 shadow-xs" title="Blush Pink"></button>
+              <button type="button" onclick="setBoothPaper('#E4ECE3', '#2F422E')" class="w-8 h-8 rounded-full bg-[#E4ECE3] border border-stone-300 shadow-xs" title="Sage Botanical"></button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-rosewood mb-2">4. Tanggal / Catatan Strip</label>
+            <input type="text" id="booth-caption-input" value="Flowers. Studio • 2026" maxlength="32"
+              class="w-full px-3 py-2 rounded-xl bg-paper border border-stone-200 text-xs font-medium"
+              oninput="renderPhotoboothCanvas()" />
+          </div>
+        </div>
+
+        <!-- Tombol Unduh -->
+        <div class="pt-3 border-t border-stone-200/80 flex flex-wrap gap-3">
+          <button type="button" onclick="downloadPhotoboothStrip()"
+            class="flex-1 py-3.5 px-5 rounded-full bg-rosewood hover:bg-[#733239] text-white text-xs sm:text-sm font-semibold shadow-md transition flex items-center justify-center gap-2">
+            <span>⬇️</span> Unduh Photo Strip (PNG)
+          </button>
+          <button type="button" onclick="attachStripToBouquet()"
+            class="py-3.5 px-4 rounded-full bg-white hover:bg-stone-50 text-ink border border-stone-200 text-xs font-semibold transition">
+            + Pasang ke Buket
+          </button>
+        </div>
+      </div>
+
+      <!-- Preview Canvas Photobooth -->
+      <div class="lg:col-span-6 flex flex-col items-center">
+        <div class="bg-paperDark/70 p-6 sm:p-8 rounded-[2rem] border border-stone-200/80 shadow-inner flex flex-col items-center">
+          <canvas id="photobooth-canvas" width="360" height="860" class="max-w-[270px] sm:max-w-[300px] h-auto rounded-lg shadow-2xl"></canvas>
+          <p class="text-[11px] text-muted mt-3">Pratinjau Resolusi Tinggi • Siap Cetak &amp; Story</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- TAB 4: TAMANKU (PERSONAL GARDEN DRAWER - LOCALSTORAGE)                  -->
+  <!-- ======================================================================= -->
+  <section id="tab-garden" class="tab-panel hidden flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-10">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 mb-8 border-b border-stone-200/80">
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.22em] text-rosewood font-semibold mb-1">Koleksi Pribadi</p>
+        <h2 class="font-editorial text-4xl sm:text-5xl text-ink">Taman Bunga Tersimpan</h2>
+      </div>
+      <p class="text-xs sm:text-sm text-muted max-w-md">
+        Setiap buket yang kamu buat atau terima dapat disimpan di sini agar bisa dibuka dan dikenang kapan saja.
+      </p>
+    </div>
+
+    <div id="garden-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Daftar buket tersimpan -->
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- FULLSCREEN RECIPIENT EXPERIENCE (MODE PENERIMA HADIAH)                  -->
+  <!-- ======================================================================= -->
+  <div id="recipient-overlay" class="fixed inset-0 z-50 hidden overflow-y-auto bg-paper">
+    
+    <!-- Bar Kontrol Mengambang Atas (Untuk Pratinjau atau Tutup) -->
+    <div class="fixed top-4 inset-x-4 z-50 flex items-center justify-between pointer-events-none">
+      <button type="button" id="btn-exit-recipient" onclick="closeRecipientFullscreen()"
+        class="pointer-events-auto px-4 py-2 rounded-full bg-white/90 backdrop-blur-md border border-stone-200 shadow-md text-xs font-semibold text-ink hover:bg-blush transition flex items-center gap-1.5">
+        <span>←</span> <span id="exit-recipient-label">Kembali ke Studio</span>
+      </button>
+
+      <div class="pointer-events-auto flex items-center gap-2">
+        <button type="button" onclick="toggleRecipientMusic()" id="rec-music-toggle"
+          class="px-3.5 py-2 rounded-full bg-white/90 backdrop-blur-md border border-stone-200 shadow-md text-xs font-semibold text-ink flex items-center gap-1.5">
+          <span id="rec-music-icon">🎵</span>
+          <span class="hidden sm:inline" id="rec-music-text">Putar Melodi</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- TAHAP 1: PEMBUKA INTERAKTIF (OPENING STAGE) -->
+    <div id="stage-opening" class="min-h-screen flex flex-col items-center justify-center p-6 text-center relative">
+      <!-- Konten pembuka akan dirender dinamis sesuai jenis opening (Wax Seal / Blow / Picnic / Fire Bloom / ASCII) -->
+    </div>
+
+    <!-- TAHAP 2: MINI-GAME KUNCI (UNLOCK STAGE - OPSIONAL) -->
+    <div id="stage-unlock" class="hidden min-h-screen flex flex-col items-center justify-center p-6 text-center relative">
+      <!-- Konten mini-game kunci (Music Box Handle / Petal Catcher) dirender dinamis -->
+    </div>
+
+    <!-- TAHAP 3: REVEAL BUKET MEKAR, KOTAK MUSIK, POLAROID & SURAT -->
+    <div id="stage-reveal" class="hidden min-h-screen py-20 px-4 sm:px-6 max-w-4xl mx-auto">
+      
+      <!-- Header Penerima -->
+      <div class="text-center mb-6">
+        <p class="text-[11px] uppercase tracking-[0.25em] text-rosewood font-semibold mb-1">Hadiah Bunga Digital Untuk</p>
+        <h2 class="font-editorial text-4xl sm:text-6xl text-ink" id="reveal-to-name">Seseorang yang Istimewa</h2>
+      </div>
+
+      <!-- Buket Utama yang Bermekaran -->
+      <div class="relative max-w-[400px] mx-auto my-4">
+        <div id="recipient-bouquet-canvas" class="w-full aspect-[4/4.3] bloom-trigger">
+          <!-- SVG Buket Besar -->
+        </div>
+        <div class="flex justify-center gap-2 mt-2">
+          <button type="button" onclick="replayRecipientBloom()"
+            class="px-4 py-1.5 rounded-full bg-white border border-stone-200 shadow-2xs text-xs font-medium text-ink hover:bg-blush/50 transition">
+            ✨ Mekarkan Ulang
+          </button>
+        </div>
+      </div>
+
+      <!-- Interactive Music Box Handle & Voice Note Bar -->
+      <div class="max-w-md mx-auto my-8 paper-sheet rounded-3xl p-5 border border-stone-200/90 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5">
+          <!-- Engkol Kotak Musik Putar Interaktif -->
+          <button type="button" id="crank-wheel-btn" onclick="crankMusicBoxManual()"
+            class="w-14 h-14 rounded-full bg-gradient-to-br from-amber-100 to-amber-200/80 border-2 border-gold/60 shadow-inner flex items-center justify-center relative group active:scale-95 transition"
+            title="Putar engkol kotak musik">
+            <div id="crank-arm" class="w-8 h-1.5 bg-gold rounded-full transition-transform duration-300 origin-left ml-4"></div>
+            <span class="w-3 h-3 rounded-full bg-rosewood absolute"></span>
+          </button>
+          <div>
+            <p class="text-xs font-bold text-ink" id="reveal-melody-title">Scott Street × Nostalgia</p>
+            <p class="text-[11px] text-muted">Ketuk engkol emas untuk memutar nada</p>
+          </div>
+        </div>
+
+        <!-- Tombol Voice Note jika tersedia -->
+        <button type="button" id="reveal-vn-btn" onclick="playRecordedVoiceNote()" class="hidden px-3.5 py-2 rounded-full bg-rosewood text-white text-xs font-semibold shadow-xs flex items-center gap-1.5">
+          <span>🎙️</span> Pesan Suara
+        </button>
+      </div>
+
+      <!-- Galeri Foto Polaroid Kenangan -->
+      <div id="reveal-polaroids-section" class="my-10">
+        <div id="reveal-polaroids-grid" class="flex flex-wrap justify-center gap-6">
+          <!-- Polaroid cards dirender di sini -->
+        </div>
+      </div>
+
+      <!-- Surat Tulisan Tangan -->
+      <div class="max-w-xl mx-auto paper-sheet rounded-[2rem] p-7 sm:p-11 border border-stone-200/90 text-center relative my-8">
+        <span class="text-2xl text-rosewood/60 block mb-3">❦</span>
+        <h3 class="font-editorial italic text-2xl sm:text-3xl text-rosewood mb-4" id="reveal-letter-title">
+          Sebuah bunga kecil untuk hari yang indah
+        </h3>
+        <p class="font-serif text-base sm:text-lg text-ink/90 leading-relaxed whitespace-pre-line" id="reveal-letter-body">
+          Semoga setiap kelopak yang mekar di sini mengingatkanmu betapa berharganya dirimu.
+        </p>
+        <div class="mt-8 pt-5 border-t border-stone-200/70">
+          <p class="text-[11px] uppercase tracking-widest text-muted mb-1">Dengan penuh kasih,</p>
+          <p class="font-hand text-3xl text-rosewood font-bold" id="reveal-from-name">Seseorang</p>
+        </div>
+      </div>
+
+      <!-- Aksi Akhir Penerima: Simpan ke Taman & Rangkai Balasan -->
+      <div class="flex flex-wrap items-center justify-center gap-3 mt-8 pb-12">
+        <button type="button" onclick="saveCurrentGiftToGarden()"
+          class="px-6 py-3.5 rounded-full bg-white hover:bg-stone-50 text-ink border border-stone-200 shadow-sm text-xs sm:text-sm font-semibold transition flex items-center gap-2">
+          <span>🌿</span> Simpan ke Tamanku
+        </button>
+        <button type="button" onclick="replyWithNewBouquet()"
+          class="px-6 py-3.5 rounded-full bg-rosewood hover:bg-[#733239] text-white shadow-lg shadow-rosewood/20 text-xs sm:text-sm font-semibold transition flex items-center gap-2">
+          <span>💐</span> Rangkai Buket Balasan
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- JAVASCRIPT ENGINE: BOTANICAL SVG, WEB AUDIO, DRAG, CAMERA & QR          -->
+  <!-- ======================================================================= -->
+  <script>
+    /* =========================================================================
+       1. DATA MASTER BUNGA, PEMBUNGKUS, PEMBUKA, KUNCI & MELODI
+       ========================================================================= */
+    const FLOWERS_DB = {
+      red_rose: {
+        id: 'red_rose', name: 'Mawar Merah', meaning: 'Cinta mendalam',
+        c1: '#B8333E', c2: '#871E27', c3: '#E06C75', emoji: '🌹'
+      },
+      blush_rose: {
+        id: 'blush_rose', name: 'Mawar Blush', meaning: 'Kelembutan & kagum',
+        c1: '#E58A94', c2: '#C25965', c3: '#FAD0D5', emoji: '🌸'
+      },
+      peony: {
+        id: 'peony', name: 'Peony Putih', meaning: 'Ketulusan & bahagia',
+        c1: '#FBF7F2', c2: '#E6D8C8', c3: '#FFFFFF', emoji: '🤍'
+      },
+      tulip: {
+        id: 'tulip', name: 'Tulip Mentega', meaning: 'Sinar hangat',
+        c1: '#F2C15A', c2: '#D4982A', c3: '#FCE49C', emoji: '🌷'
+      },
+      sunflower: {
+        id: 'sunflower', name: 'Matahari', meaning: 'Keceriaan abadi',
+        c1: '#E8A838', c2: '#4E311D', c3: '#F7CE68', emoji: '🌻'
+      },
+      lily: {
+        id: 'lily', name: 'Lily Ivory', meaning: 'Hati yang murni',
+        c1: '#FFFDF9', c2: '#D9C382', c3: '#F2ECE1', emoji: '⚜️'
+      },
+      lavender: {
+        id: 'lavender', name: 'Lavender', meaning: 'Ketenangan & rindu',
+        c1: '#9B84B8', c2: '#6D568A', c3: '#C8B8DB', emoji: '🪻'
+      },
+      babys_breath: {
+        id: 'babys_breath', name: "Baby's Breath", meaning: 'Cinta abadi',
+        c1: '#FFFFFF', c2: '#DCE3D5', c3: '#F7F5F0', emoji: '☁️'
+      },
+      eucalyptus: {
+        id: 'eucalyptus', name: 'Eucalyptus', meaning: 'Kesegaran alami',
+        c1: '#7E9680', c2: '#556B57', c3: '#A5BBA7', emoji: '🌿'
+      }
+    };
+
+    const WRAPS_DB = {
+      kraft: { id: 'kraft', name: 'Kraft Klasik', back: '#C8A67E', front: '#DEC19B', fold: '#B38E64', ribbon: '#7D3B42' },
+      cream: { id: 'cream', name: 'Linen Krem', back: '#E8DFD1', front: '#F5EFE6', fold: '#D6C9B6', ribbon: '#8C3F47' },
+      blush: { id: 'blush', name: 'Blush Pastel', back: '#E5B8BE', front: '#F4D5D9', fold: '#D49CA4', ribbon: '#7A3038' },
+      sage: { id: 'sage', name: 'Sage Botani', back: '#A3B5A2', front: '#C2D1C1', fold: '#889C87', ribbon: '#475946' },
+      newsprint: { id: 'newsprint', name: 'Koran Vintage', back: '#D8D1C5', front: '#EAE4D8', fold: '#C2B9A9', ribbon: '#231F1E' },
+      velvet: { id: 'velvet', name: 'Midnight Noir', back: '#2B2628', front: '#3D3639', fold: '#1C181A', ribbon: '#C6A15B' }
+    };
+
+    const OPENINGS_DB = {
+      wax_seal: {
+        id: 'wax_seal', name: 'Segel Lilin', icon: '🕯️',
+        desc: 'Amplop kertas tekstur dengan segel lilin merah klasik yang harus diketuk untuk membuka.'
+      },
+      blow_open: {
+        id: 'blow_open', name: 'Tiup & Buka', icon: '🌬️',
+        desc: 'Tiup ke mikrofon atau tahan tombol napas untuk menerbangkan kelopak dan membuka buket.'
+      },
+      picnic: {
+        id: 'picnic', name: 'Polaroid Picnic', icon: '🧺',
+        desc: 'Suasana piknik hangat di atas kain linen dengan bingkai foto Polaroid yang tersingkap.'
+      },
+      fire_bloom: {
+        id: 'fire_bloom', name: 'Fire Bloom', icon: '✨',
+        desc: 'Langit malam berbintang; ketuk layar untuk memercikkan kembang api emas yang mekar jadi bunga.'
+      },
+      ascii: {
+        id: 'ascii', name: 'ASCII Bouquet', icon: '⌨️',
+        desc: 'Rangkaian puisi botani bergaya terminal retro yang perlahan berubah menjadi lukisan cat air.'
+      }
+    };
+
+    const LOCKS_DB = {
+      none: { id: 'none', name: 'Langsung Buka', icon: '🔓', desc: 'Terbuka segera setelah pembuka.' },
+      music_box: { id: 'music_box', name: 'Kotak Musik Putar', icon: '🎶', desc: 'Putar engkol kotak musik untuk membuka.' },
+      petal_catch: { id: 'petal_catch', name: 'Tangkap 5 Kelopak', icon: '🌸', desc: 'Tangkap 5 kelopak bunga jatuh.' }
+    };
+
+    const MELODIES_DB = {
+      nostalgia: {
+        id: 'nostalgia', name: 'Scott Street × Nostalgia', tempo: 76,
+        notes: ['E5', 'D5', 'C5', 'G4', 'A4', 'C5', 'E5', 'D5', 'C5', 'B4', 'G4', 'A4', 'F4', 'A4', 'C5', 'B4']
+      },
+      clair: {
+        id: 'clair', name: 'Clair de Lune Music Box', tempo: 68,
+        notes: ['F5', 'D5', 'F5', 'D5', 'C5', 'D5', 'C5', 'A4', 'Bb4', 'C5', 'Bb4', 'G4', 'A4', 'Bb4', 'A4', 'F4']
+      },
+      waltz: {
+        id: 'waltz', name: 'Waltz Musim Semi', tempo: 88,
+        notes: ['G4', 'B4', 'D5', 'G5', 'F#5', 'D5', 'B4', 'D5', 'E5', 'C5', 'A4', 'E5', 'D5', 'B4', 'G4', 'A4']
+      },
+      lullaby: {
+        id: 'lullaby', name: 'Lullaby Hujan Sore', tempo: 64,
+        notes: ['C5', 'E5', 'G5', 'B5', 'A5', 'G5', 'E5', 'C5', 'D5', 'F5', 'A5', 'G5', 'E5', 'D5', 'C5', 'G4']
+      }
+    };
+
+    const MOOD_PRESETS = {
+      romantic: {
+        title: 'Sebuah bunga kecil untuk hari yang indah',
+        note: 'Semoga setiap kelopak yang mekar di sini mengingatkanmu betapa berharganya dirimu. Terima kasih sudah hadir dan membuat hariku selalu terasa hangat.'
+      },
+      birthday: {
+        title: 'Selamat Bertambah Usia, Sayang',
+        note: 'Di hari spesialmu ini, aku merangkai bunga yang tak akan pernah layu—seperti doaku agar kebahagiaan, kesehatan, dan cinta selalu menyertai setiap langkahmu.'
+      },
+      ldr: {
+        title: 'Pengobat Rindu dari Kejauhan',
+        note: 'Meski jarak memisahkan langkah kita hari ini, semoga buket digital ini bisa memelukmu dari jauh. Sampai bertemu lagi di waktu terbaik kita.'
+      },
+      apology: {
+        title: 'Maafkan Aku, Ya?',
+        note: 'Aku tahu kata-kata saja kadang belum cukup, jadi aku rangkai bunga ini sebagai tanda ketulusan hatiku. Semoga senyummu kembali merekah hari ini.'
+      }
+    };
+
+    /* =========================================================================
+       2. STATE UTAMA APLIKASI
+       ========================================================================= */
+    let giftState = {
+      opening: 'wax_seal',
+      lock: 'none',
+      wrap: 'kraft',
+      tagText: 'Untukmu, Selamanya',
+      stems: [
+        { type: 'red_rose', x: 165, y: 165, r: -14, s: 1.02 },
+        { type: 'blush_rose', x: 235, y: 165, r: 14, s: 1.02 },
+        { type: 'peony', x: 200, y: 138, r: 0, s: 1.1 },
+        { type: 'tulip', x: 140, y: 192, r: -22, s: 0.94 },
+        { type: 'sunflower', x: 260, y: 192, r: 22, s: 0.94 },
+        { type: 'babys_breath', x: 200, y: 185, r: 4, s: 0.96 }
+      ],
+      to: '',
+      from: '',
+      title: 'Sebuah bunga kecil untuk hari yang indah',
+      note: 'Semoga setiap kelopak yang mekar di sini mengingatkanmu betapa berharganya dirimu. Terima kasih sudah hadir dan membuat hariku selalu hangat.',
+      melody: 'nostalgia',
+      polaroids: [
+        { img: null, caption: 'Kenangan manis kita ✨', sampleSeed: 1 }
+      ]
+    };
+
+    // Audio & Recorder State
+    let audioCtx = null;
+    let melodyTimer = null;
+    let isMelodyPlaying = false;
+    let melodyStepIndex = 0;
+    let crankAngle = 0;
+
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let recordedAudioURL = null;
+    let isRecordingVN = false;
+
+    // Photobooth State
+    let boothPhotos = [null, null, null];
+    let boothFilter = 'warm';
+    let boothBgColor = '#FAF7F2';
+    let boothTextColor = '#231F1E';
+    let boothStream = null;
+
+    // Drag Stem State
+    let draggingStemIndex = null;
+
+    /* =========================================================================
+       3. INISIALISASI & PARSING URL
+       ========================================================================= */
+    window.addEventListener('DOMContentLoaded', () => {
+      const openedFromLink = loadGiftFromURLHash();
+
+      renderOpeningOptions();
+      renderLockOptions();
+      renderBotanicalPicker();
+      renderWrapPicker();
+      renderMelodyOptions();
+      renderPolaroidEditor();
+      syncFormFromState();
+      renderAllBouquetSVGs();
+      updateQRCode();
+      updateGardenBadge();
+
+      // Init Photobooth default sample
+      fillSampleBoothPhotos(true);
+
+      if (openedFromLink) {
+        openRecipientFullscreen(false);
+      }
+    });
+
+    function encodeGiftHash() {
+      try {
+        const compact = {
+          o: giftState.opening,
+          l: giftState.lock,
+          w: giftState.wrap,
+          tg: giftState.tagText,
+          st: giftState.stems.map(s => [s.type, Math.round(s.x), Math.round(s.y), Math.round(s.r), Number(s.s.toFixed(2))]),
+          to: giftState.to,
+          fr: giftState.from,
+          ti: giftState.title,
+          no: giftState.note,
+          me: giftState.melody,
+          // Foto disertakan sebagai JPEG terkompresi agar penerima mendapat foto yang sama.
+          // Data URL membuat link lebih panjang; kompresi dilakukan saat upload.
+          po: giftState.polaroids.map(p => ({ c: p.caption, s: p.sampleSeed || 1, i: p.img || null }))
+        };
+        const json = JSON.stringify(compact);
+        const b64 = btoa(unescape(encodeURIComponent(json)));
+        // Base64 URL-safe: menghindari %2B/%2F/%3D sehingga link foto lebih pendek.
+        const safeB64 = b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+        return '#gift=' + safeB64;
+      } catch (e) {
+        return '';
+      }
+    }
+
+    function loadGiftFromURLHash() {
+      try {
+        const hash = window.location.hash;
+        if (!hash || !hash.includes('gift=')) return false;
+        const raw = decodeURIComponent(hash.split('gift=')[1].split('&')[0]);
+        // Mendukung link baru Base64 URL-safe dan link lama yang memakai Base64 biasa.
+        const base64 = raw.replace(/-/g, '+').replace(/_/g, '/');
+        const padded = base64 + '='.repeat((4 - base64.length % 4) % 4);
+        const parsed = JSON.parse(decodeURIComponent(escape(atob(padded))));
+
+        if (parsed && Array.isArray(parsed.st) && parsed.st.length > 0) {
+          giftState.opening = OPENINGS_DB[parsed.o] ? parsed.o : 'wax_seal';
+          giftState.lock = LOCKS_DB[parsed.l] ? parsed.l : 'none';
+          giftState.wrap = WRAPS_DB[parsed.w] ? parsed.w : 'kraft';
+          giftState.tagText = parsed.tg || 'Untukmu';
+          giftState.stems = parsed.st.map(arr => ({
+            type: FLOWERS_DB[arr[0]] ? arr[0] : 'red_rose',
+            x: arr[1] || 200,
+            y: arr[2] || 160,
+            r: arr[3] || 0,
+            s: arr[4] || 1
+          }));
+          giftState.to = parsed.to || '';
+          giftState.from = parsed.fr || '';
+          giftState.title = parsed.ti || 'Sebuah bunga untukmu';
+          giftState.note = parsed.no || '';
+          giftState.melody = MELODIES_DB[parsed.me] ? parsed.me : 'nostalgia';
+          if (Array.isArray(parsed.po)) {
+            giftState.polaroids = parsed.po.map((p, idx) => ({
+              // Backward compatible: link lama tanpa foto tetap menampilkan sample.
+              img: typeof p.i === 'string' && /^data:image\/(?:jpeg|png|webp);base64,/i.test(p.i) ? p.i : null,
+              caption: p.c || 'Kenangan indah',
+              sampleSeed: p.s || (idx + 1)
+            }));
+          }
+          return true;
+        }
+      } catch (e) {
+        console.warn('URL hash tidak terbaca:', e);
+      }
+      return false;
+    }
+
+    function syncURLAndQR() {
+      const h = encodeGiftHash();
+      if (h && window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', h);
+      }
+      updateQRCode();
+    }
+
+    function updateQRCode() {
+      const container = document.getElementById('qrcode-canvas');
+      if (!container) return;
+      container.innerHTML = '';
+      const fullUrl = window.location.href.split('#')[0] + encodeGiftHash();
+      if (fullUrl.length > 900) {
+        container.innerHTML = '<div class="text-[10px] leading-tight text-muted p-2">Foto membuat link terlalu panjang untuk QR. Gunakan tombol Salin Link.</div>';
+        return;
+      }
+      try {
+        new QRCode(container, {
+          text: fullUrl,
+          width: 112,
+          height: 112,
+          colorDark: '#231F1E',
+          colorLight: '#FFFFFF',
+          correctLevel: QRCode.CorrectLevel.L
+        });
+      } catch (e) {
+        container.innerHTML = `<div class="text-[10px] text-muted p-2">QR Siap Dibagikan</div>`;
+      }
+    }
+
+    /* =========================================================================
+       4. NAVIGASI TAB UTAMA & SUBTAB
+       ========================================================================= */
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-panel').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+        if (btn.dataset.tab === tabName) {
+          btn.classList.add('bg-white', 'text-ink', 'shadow-xs');
+          btn.classList.remove('text-muted');
+        } else {
+          btn.classList.remove('bg-white', 'text-ink', 'shadow-xs');
+          btn.classList.add('text-muted');
+        }
+      });
+
+      if (tabName === 'catalog') renderCatalogGallery();
+      if (tabName === 'garden') renderGardenDrawer();
+      if (tabName === 'photobooth') renderPhotoboothCanvas();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function switchKeepsakeSubtab(subName) {
+      document.querySelectorAll('.ksub-panel').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`ksub-${subName}`).classList.remove('hidden');
+
+      document.querySelectorAll('.ksub-btn').forEach(btn => {
+        if (btn.dataset.ksub === subName) {
+          btn.classList.add('bg-white', 'text-ink', 'shadow-2xs');
+          btn.classList.remove('text-muted');
+        } else {
+          btn.classList.remove('bg-white', 'text-ink', 'shadow-2xs');
+          btn.classList.add('text-muted');
+        }
+      });
+    }
+
+    /* =========================================================================
+       5. RENDER KONTROL STUDIO (OPENINGS, LOCKS, FLOWERS, WRAPS, MELODIES)
+       ========================================================================= */
+    function renderOpeningOptions() {
+      const grid = document.getElementById('opening-options-grid');
+      grid.innerHTML = Object.values(OPENINGS_DB).map(op => {
+        const active = giftState.opening === op.id;
+        return `
+          <button type="button" onclick="selectOpening('${op.id}')"
+            class="p-3 rounded-2xl border text-left transition active:scale-95 ${
+              active ? 'bg-blush/50 border-rosewood ring-2 ring-rosewood/15' : 'bg-paper hover:bg-white border-stone-200'
+            }">
+            <div class="text-lg mb-1">${op.icon}</div>
+            <div class="text-xs font-bold text-ink">${op.name}</div>
+            <div class="text-[10px] text-muted line-clamp-2 mt-0.5 leading-snug">${op.desc}</div>
+          </button>
+        `;
+      }).join('');
+      document.getElementById('studio-opening-badge').textContent = OPENINGS_DB[giftState.opening].name;
+    }
+
+    function selectOpening(id) {
+      giftState.opening = id;
+      renderOpeningOptions();
+      syncURLAndQR();
+    }
+
+    function renderLockOptions() {
+      const grid = document.getElementById('lock-options-grid');
+      grid.innerHTML = Object.values(LOCKS_DB).map(lk => {
+        const active = giftState.lock === lk.id;
+        return `
+          <button type="button" onclick="selectLock('${lk.id}')"
+            class="p-3 rounded-2xl border text-left transition active:scale-95 ${
+              active ? 'bg-blush/50 border-rosewood ring-2 ring-rosewood/15' : 'bg-paper hover:bg-white border-stone-200'
+            }">
+            <div class="flex items-center gap-1.5 mb-0.5">
+              <span>${lk.icon}</span>
+              <span class="text-xs font-bold text-ink">${lk.name}</span>
+            </div>
+            <p class="text-[10px] text-muted leading-snug">${lk.desc}</p>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectLock(id) {
+      giftState.lock = id;
+      renderLockOptions();
+      syncURLAndQR();
+    }
+
+    function renderBotanicalPicker() {
+      const grid = document.getElementById('botanical-picker-grid');
+      grid.innerHTML = Object.values(FLOWERS_DB).map(f => `
+        <button type="button" onclick="addStemToBouquet('${f.id}')"
+          class="p-2.5 rounded-2xl bg-paper hover:bg-blush/40 border border-stone-200/80 hover:border-rosewood/40 text-left transition active:scale-95 flex items-center gap-2">
+          <span class="text-lg shrink-0">${f.emoji}</span>
+          <div class="min-w-0 flex-1">
+            <div class="text-xs font-semibold text-ink truncate">${f.name}</div>
+            <div class="text-[10px] text-muted truncate">${f.meaning}</div>
+          </div>
+          <span class="text-rosewood font-bold text-sm">+</span>
+        </button>
+      `).join('');
+      renderActiveStemChips();
+    }
+
+    function renderActiveStemChips() {
+      const box = document.getElementById('active-stems-chips');
+      document.getElementById('stem-count-badge').textContent = `${giftState.stems.length} / 11 Tangkai`;
+
+      box.innerHTML = giftState.stems.map((st, idx) => {
+        const f = FLOWERS_DB[st.type];
+        return `
+          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white border border-stone-200 text-[11px] font-medium text-ink">
+            <span>${f.emoji}</span>
+            <span>${f.name}</span>
+            <button type="button" onclick="removeStemAt(${idx})" class="ml-0.5 text-muted hover:text-rosewood font-bold">×</button>
+          </span>
+        `;
+      }).join('');
+    }
+
+    function addStemToBouquet(typeId) {
+      if (giftState.stems.length >= 11) {
+        showToast('Maksimal 11 tangkai agar rangkaian tetap anggun', '💐');
+        return;
+      }
+      const angle = (Math.random() - 0.5) * 44;
+      const x = 200 + Math.sin(angle * Math.PI / 180) * (65 + Math.random() * 35);
+      const y = 135 + Math.random() * 65;
+      giftState.stems.push({
+        type: typeId,
+        x: Math.round(x),
+        y: Math.round(y),
+        r: Math.round(angle * 0.6),
+        s: Number((0.92 + Math.random() * 0.16).toFixed(2))
+      });
+      playSingleChime(giftState.stems.length);
+      renderActiveStemChips();
+      renderAllBouquetSVGs();
+      syncURLAndQR();
+    }
+
+    function removeStemAt(idx) {
+      if (giftState.stems.length <= 1) {
+        showToast('Minimal sisakan 1 tangkai bunga di dalam buket', '🌹');
+        return;
+      }
+      giftState.stems.splice(idx, 1);
+      renderActiveStemChips();
+      renderAllBouquetSVGs();
+      syncURLAndQR();
+    }
+
+    function autoArrangeBouquet() {
+      const count = giftState.stems.length;
+      giftState.stems = giftState.stems.map((st, i) => {
+        const ratio = count === 1 ? 0.5 : i / (count - 1);
+        const spread = (ratio - 0.5) * 2; // -1 to 1
+        const row = i % 2 === 0 ? 0 : 1;
+        return {
+          ...st,
+          x: Math.round(200 + spread * 68),
+          y: Math.round(145 + Math.abs(spread) * 38 + row * 18),
+          r: Math.round(spread * 20),
+          s: Number((1.05 - Math.abs(spread) * 0.12).toFixed(2))
+        };
+      });
+      playSingleChime(4);
+      renderAllBouquetSVGs();
+      syncURLAndQR();
+      showToast('Komposisi buket dirapikan otomatis ✨', '💐');
+    }
+
+    function resetBouquetStems() {
+      giftState.stems = [
+        { type: 'red_rose', x: 165, y: 165, r: -14, s: 1.02 },
+        { type: 'blush_rose', x: 235, y: 165, r: 14, s: 1.02 },
+        { type: 'peony', x: 200, y: 138, r: 0, s: 1.1 },
+        { type: 'tulip', x: 140, y: 192, r: -22, s: 0.94 },
+        { type: 'sunflower', x: 260, y: 192, r: 22, s: 0.94 },
+        { type: 'babys_breath', x: 200, y: 185, r: 4, s: 0.96 }
+      ];
+      renderActiveStemChips();
+      renderAllBouquetSVGs();
+      syncURLAndQR();
+    }
+
+    function renderWrapPicker() {
+      const grid = document.getElementById('wrap-picker-grid');
+      grid.innerHTML = Object.values(WRAPS_DB).map(w => {
+        const active = giftState.wrap === w.id;
+        return `
+          <button type="button" onclick="selectWrap('${w.id}')"
+            class="p-2 rounded-xl border text-center transition ${
+              active ? 'border-rosewood bg-blush/40 ring-1 ring-rosewood/20' : 'border-stone-200 bg-paper hover:bg-white'
+            }">
+            <span class="block w-6 h-6 rounded-full mx-auto mb-1 border border-black/10" style="background:${w.front};"></span>
+            <span class="block text-[10px] font-semibold text-ink truncate">${w.name}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectWrap(id) {
+      giftState.wrap = id;
+      renderWrapPicker();
+      renderAllBouquetSVGs();
+      syncURLAndQR();
+    }
+
+    function renderMelodyOptions() {
+      const grid = document.getElementById('melody-options-grid');
+      grid.innerHTML = Object.values(MELODIES_DB).map(m => {
+        const active = giftState.melody === m.id;
+        return `
+          <button type="button" onclick="selectMelody('${m.id}')"
+            class="p-3 rounded-2xl border text-left transition flex items-center justify-between ${
+              active ? 'bg-blush/50 border-rosewood' : 'bg-paper hover:bg-white border-stone-200'
+            }">
+            <div>
+              <div class="text-xs font-bold text-ink">${m.name}</div>
+              <div class="text-[10px] text-muted">Kotak Musik • ${m.tempo} BPM</div>
+            </div>
+            <span class="text-sm">${active ? '🎶' : '▶️'}</span>
+          </button>
+        `;
+      }).join('');
+      document.getElementById('studio-melody-name').textContent = MELODIES_DB[giftState.melody].name;
+    }
+
+    function selectMelody(id) {
+      giftState.melody = id;
+      renderMelodyOptions();
+      syncURLAndQR();
+      startMelodyPlayback();
+    }
+
+    /* =========================================================================
+       6. FORM INPUTS, PRESETS, POLAROID & VOICE NOTE
+       ========================================================================= */
+    function handleFormChange() {
+      giftState.to = document.getElementById('input-to').value;
+      giftState.from = document.getElementById('input-from').value;
+      giftState.title = document.getElementById('input-title').value;
+      giftState.note = document.getElementById('input-note').value;
+      giftState.tagText = document.getElementById('input-tag-text').value;
+
+      document.getElementById('note-length').textContent = `${giftState.note.length} / 400`;
+      updateStudioCardPreview();
+      renderAllBouquetSVGs();
+      syncURLAndQR();
+    }
+
+    function syncFormFromState() {
+      document.getElementById('input-to').value = giftState.to;
+      document.getElementById('input-from').value = giftState.from;
+      document.getElementById('input-title').value = giftState.title;
+      document.getElementById('input-note').value = giftState.note;
+      document.getElementById('input-tag-text').value = giftState.tagText;
+      document.getElementById('note-length').textContent = `${giftState.note.length} / 400`;
+      updateStudioCardPreview();
+    }
+
+    function updateStudioCardPreview() {
+      document.getElementById('studio-card-title').textContent = giftState.title.trim() || 'Sebuah bunga kecil untuk hari yang indah';
+      document.getElementById('studio-card-note').textContent = giftState.note.trim() || 'Semoga setiap kelopak yang mekar di sini mengingatkanmu betapa berharganya dirimu.';
+      document.getElementById('studio-card-to').textContent = giftState.to.trim() || 'Kamu';
+      document.getElementById('studio-card-from').textContent = giftState.from.trim() || 'Seseorang';
+    }
+
+    function applyMoodPreset(moodKey) {
+      const p = MOOD_PRESETS[moodKey];
+      if (!p) return;
+      document.getElementById('input-title').value = p.title;
+      document.getElementById('input-note').value = p.note;
+      handleFormChange();
+      showToast('Template kalimat diterapkan ✍️', '💌');
+    }
+
+    /* Polaroid Editor & Upload */
+    // Kecilkan foto agar data yang tertanam di link tidak terlalu besar.
+    // Foto tetap disertakan dalam link; server penyimpanan foto tidak diperlukan.
+    function compressGiftImage(dataURL, maxSide = 220, quality = 0.45) {
+      return new Promise((resolve) => {
+        const image = new Image();
+        image.onload = () => {
+          const scale = Math.min(1, maxSide / Math.max(image.naturalWidth || image.width, image.naturalHeight || image.height));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.max(1, Math.round((image.naturalWidth || image.width) * scale));
+          canvas.height = Math.max(1, Math.round((image.naturalHeight || image.height) * scale));
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+          try { resolve(canvas.toDataURL('image/jpeg', quality)); }
+          catch (e) { resolve(dataURL); }
+        };
+        image.onerror = () => resolve(dataURL);
+        image.src = dataURL;
+      });
+    }
+
+    async function handlePolaroidUpload(event) {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+
+      files.forEach(file => {
+        if (giftState.polaroids.length >= 3) {
+          giftState.polaroids.shift();
+        }
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const compactImage = await compressGiftImage(e.target.result);
+          giftState.polaroids.push({
+            img: compactImage,
+            caption: 'Momen berharga ✨',
+            sampleSeed: Math.ceil(Math.random() * 3)
+          });
+          renderPolaroidEditor();
+          syncURLAndQR();
+        };
+        reader.readAsDataURL(file);
+      });
+      event.target.value = '';
+    }
+
+    function generateSamplePolaroidDataURL(seed = 1) {
+      const c = document.createElement('canvas');
+      c.width = 300;
+      c.height = 300;
+      const ctx = c.getContext('2d');
+
+      const palettes = [
+        ['#F6E2E4', '#D99B9E', '#8C3F47'],
+        ['#E6ECE3', '#9EB39C', '#4E664C'],
+        ['#F5EAD8', '#D6B68A', '#7A5832']
+      ];
+      const pal = palettes[(seed - 1) % palettes.length];
+
+      const grad = ctx.createLinearGradient(0, 0, 300, 300);
+      grad.addColorStop(0, pal[0]);
+      grad.addColorStop(1, pal[1]);
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 300, 300);
+
+      // Lukisan siluet botani lembut di dalam polaroid contoh
+      ctx.fillStyle = 'rgba(255,255,255,0.45)';
+      ctx.beginPath();
+      ctx.arc(150, 135, 68, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = pal[2];
+      ctx.font = 'italic 26px Georgia, serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(seed === 1 ? 'Always & Forever' : seed === 2 ? 'Golden Hour' : 'Blooming Days', 150, 145);
+
+      return c.toDataURL('image/png');
+    }
+
+    function renderPolaroidEditor() {
+      const list = document.getElementById('polaroid-editor-list');
+      document.getElementById('polaroid-count-label').textContent = giftState.polaroids.length;
+
+      list.innerHTML = giftState.polaroids.map((item, idx) => {
+        const src = item.img || generateSamplePolaroidDataURL(item.sampleSeed || idx + 1);
+        return `
+          <div class="polaroid-frame rounded-lg relative">
+            <button type="button" onclick="removePolaroidAt(${idx})"
+              class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-ink text-white text-xs font-bold shadow-md">×</button>
+            <img src="${src}" alt="Kenangan Polaroid" class="w-full aspect-square object-cover rounded-xs bg-stone-100" />
+            <input type="text" value="${item.caption}" maxlength="28"
+              oninput="updatePolaroidCaption(${idx}, this.value)"
+              class="w-full mt-2 text-center font-hand text-lg text-ink bg-transparent border-b border-dashed border-stone-300 focus:outline-none focus:border-rosewood" />
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updatePolaroidCaption(idx, val) {
+      if (giftState.polaroids[idx]) {
+        giftState.polaroids[idx].caption = val;
+        syncURLAndQR();
+      }
+    }
+
+    function removePolaroidAt(idx) {
+      giftState.polaroids.splice(idx, 1);
+      renderPolaroidEditor();
+      syncURLAndQR();
+    }
+
+    /* Voice Note Recorder (MediaRecorder API) */
+    async function toggleVoiceRecording() {
+      if (isRecordingVN) {
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+          mediaRecorder.stop();
+        }
+        isRecordingVN = false;
+        document.getElementById('rec-btn-text').textContent = 'Mulai Rekam Suara';
+        document.getElementById('rec-dot').classList.remove('animate-ping');
+        return;
+      }
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        recordedChunks = [];
+        mediaRecorder = new MediaRecorder(stream);
+
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) recordedChunks.push(e.data);
+        };
+
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+          recordedAudioURL = URL.createObjectURL(blob);
+          stream.getTracks().forEach(t => t.stop());
+
+          document.getElementById('vn-status-badge').textContent = 'Tersimpan ✓';
+          document.getElementById('vn-status-badge').className = 'text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold';
+          document.getElementById('btn-play-vn').disabled = false;
+          document.getElementById('btn-clear-vn').classList.remove('hidden');
+          showToast('Pesan suara berhasil direkam 🎙️', '✅');
+        };
+
+        mediaRecorder.start();
+        isRecordingVN = true;
+        document.getElementById('rec-btn-text').textContent = 'Hentikan Rekaman...';
+        document.getElementById('rec-dot').classList.add('animate-ping');
+
+        // Otomatis berhenti setelah 15 detik
+        setTimeout(() => {
+          if (isRecordingVN) toggleVoiceRecording();
+        }, 15000);
+      } catch (err) {
+        showToast('Izin mikrofon tidak tersedia di browser ini', '🎙️');
+      }
+    }
+
+    function playRecordedVoiceNote() {
+      if (!recordedAudioURL) {
+        showToast('Belum ada rekaman suara', '🎙️');
+        return;
+      }
+      const audio = new Audio(recordedAudioURL);
+      audio.play();
+      showToast('Memutar pesan suara...', '🔊');
+    }
+
+    function clearVoiceNote() {
+      recordedAudioURL = null;
+      document.getElementById('vn-status-badge').textContent = 'Belum ada';
+      document.getElementById('vn-status-badge').className = 'text-[11px] px-2.5 py-0.5 rounded-full bg-stone-200/70 text-muted font-medium';
+      document.getElementById('btn-play-vn').disabled = true;
+      document.getElementById('btn-clear-vn').classList.add('hidden');
+    }
+
+    /* =========================================================================
+       7. BOTANICAL WATERCOLOR-STYLE SVG GENERATOR & INTERACTIVE DRAGGING
+       ========================================================================= */
+    function buildBouquetSVGMarkup(interactive = false) {
+      const wrap = WRAPS_DB[giftState.wrap] || WRAPS_DB.kraft;
+      const tagLabel = (giftState.tagText || 'Untukmu').slice(0, 22);
+
+      // Tangkai & daun
+      const stemsMarkup = giftState.stems.map((st, idx) => {
+        const ctrlX = (st.x + 200) / 2;
+        return `
+          <g>
+            <path d="M ${st.x} ${st.y + 8} Q ${ctrlX} 265 200 345"
+                  stroke="#536E52" stroke-width="4" stroke-linecap="round" fill="none" />
+            <path d="M ${ctrlX} 252 Q ${st.x - 24} 236 ${st.x - 10} 220 Q ${st.x + 4} 234 ${ctrlX} 252 Z"
+                  fill="#6E8C6D" opacity="0.88" />
+          </g>
+        `;
+      }).join('');
+
+      // Kepala Bunga (Layered Hand-Drawn Look)
+      const crownsMarkup = giftState.stems.map((st, idx) => {
+        const delayClass = `bloom-d${idx % 11}`;
+        const dragAttr = interactive ? `data-stem-idx="${idx}" onpointerdown="startStemDrag(event, ${idx})"` : '';
+        return `
+          <g class="stem-group ${delayClass}" ${dragAttr}>
+            <g class="flower-crown" transform="translate(${st.x}, ${st.y}) scale(${st.s}) rotate(${st.r})">
+              ${drawBotanicalFlowerSVG(st.type)}
+            </g>
+          </g>
+        `;
+      }).join('');
+
+      // Tekstur koran jika wrap === 'newsprint'
+      const newsprintLines = wrap.id === 'newsprint' ? `
+        <g opacity="0.22" stroke="#231F1E" stroke-width="1">
+          <line x1="135" y1="185" x2="185" y2="185" />
+          <line x1="138" y1="193" x2="182" y2="193" />
+          <line x1="215" y1="185" x2="265" y2="185" />
+          <line x1="218" y1="193" x2="262" y2="193" />
+        </g>
+      ` : '';
+
+      return `
+        <svg viewBox="0 0 400 430" class="w-full h-full overflow-visible drop-shadow-md" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="paperShadow" x="-15%" y="-15%" width="130%" height="130%">
+              <feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#231F1E" flood-opacity="0.13"/>
+            </filter>
+          </defs>
+
+          <!-- 1. Kertas Belakang -->
+          <g filter="url(#paperShadow)">
+            <path d="M 200 385 L 86 168 Q 140 116 200 132 Q 260 116 314 168 Z" fill="${wrap.back}" />
+            <path d="M 200 385 L 112 178 Q 200 154 288 178 Z" fill="${wrap.fold}" opacity="0.55" />
+            ${newsprintLines}
+          </g>
+
+          <!-- 2. Dedaunan Pengisi Botani -->
+          <g opacity="0.85">
+            <ellipse cx="126" cy="192" rx="20" ry="10" transform="rotate(-38 126 192)" fill="#7A9679" />
+            <ellipse cx="274" cy="192" rx="20" ry="10" transform="rotate(38 274 192)" fill="#7A9679" />
+            <ellipse cx="152" cy="142" rx="17" ry="8.5" transform="rotate(-22 152 142)" fill="#8FA88E" />
+            <ellipse cx="248" cy="142" rx="17" ry="8.5" transform="rotate(22 248 142)" fill="#8FA88E" />
+          </g>
+
+          <!-- 3. Tangkai & Kepala Bunga -->
+          ${stemsMarkup}
+          ${crownsMarkup}
+
+          <!-- 4. Kertas Pembungkus Depan (Lipatan Berlapis) -->
+          <g filter="url(#paperShadow)">
+            <path d="M 200 392 L 102 222 Q 154 242 206 272 Z" fill="${wrap.front}" />
+            <path d="M 200 392 L 298 222 Q 246 242 194 272 Z" fill="${wrap.fold}" />
+            <path d="M 200 392 L 144 252 Q 200 272 256 252 Z" fill="${wrap.front}" opacity="0.96" />
+          </g>
+
+          <!-- 5. Pita Sutra & Kartu Tag Gantung -->
+          <g transform="translate(200, 300)">
+            <rect x="-34" y="-5" width="68" height="10" rx="5" fill="${wrap.ribbon}" />
+            <path d="M -5 3 L -28 42 L -16 38 L -1 6 Z" fill="${wrap.ribbon}" />
+            <path d="M 5 3 L 28 42 L 16 38 L 1 6 Z" fill="${wrap.ribbon}" />
+            <path d="M 0 0 C -26 -20, -34 14, 0 3 Z" fill="${wrap.ribbon}" />
+            <path d="M 0 0 C 26 -20, 34 14, 0 3 Z" fill="${wrap.ribbon}" />
+            <circle cx="0" cy="1" r="5.5" fill="${wrap.ribbon}" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" />
+
+            <!-- Kartu Tag Kecil Tergantung -->
+            <g transform="translate(24, 18) rotate(12)">
+              <line x1="-18" y1="-14" x2="0" y2="0" stroke="#B8924A" stroke-width="1.2" />
+              <rect x="-4" y="-2" width="76" height="24" rx="4" fill="#FFFDF9" stroke="#D8CBB8" stroke-width="1" />
+              <circle cx="2" cy="10" r="2" fill="#B8924A" />
+              <text x="37" y="13" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#231F1E">${escapeXML(tagLabel)}</text>
+            </g>
+          </g>
+        </svg>
+      `;
+    }
+
+    function escapeXML(str) {
+      return str.replace(/[<>&'"]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' }[c]));
+    }
+
+    function drawBotanicalFlowerSVG(type) {
+      const f = FLOWERS_DB[type] || FLOWERS_DB.red_rose;
+      switch (type) {
+        case 'red_rose':
+        case 'blush_rose':
+          return `
+            <circle cx="0" cy="0" r="30" fill="${f.c1}" />
+            <path d="M -25 -9 C -28 -28, 28 -28, 25 -9 C 30 13, 11 28, 0 28 C -11 28, -30 13, -25 -9 Z" fill="${f.c1}" />
+            <path d="M -18 -5 C -20 -20, 20 -20, 18 -5 C 21 9, 8 20, 0 20 C -8 20, -21 9, -18 -5 Z" fill="${f.c3}" opacity="0.55" />
+            <path d="M -11 -2 C -12 -13, 12 -13, 11 -2 C 13 6, 4 13, 0 13 C -4 13, -13 6, -11 -2 Z" fill="${f.c2}" />
+            <path d="M -5 0 C -5 -6, 6 -6, 5 0 C 5 4, -4 5, -2 -1" stroke="${f.c3}" stroke-width="2" fill="none" stroke-linecap="round"/>
+          `;
+        case 'peony':
+          return `
+            <circle cx="0" cy="0" r="32" fill="${f.c2}" />
+            <circle cx="-8" cy="-6" r="18" fill="${f.c1}" />
+            <circle cx="9" cy="-5" r="18" fill="${f.c1}" />
+            <circle cx="-7" cy="8" r="17" fill="${f.c1}" />
+            <circle cx="8" cy="8" r="17" fill="${f.c1}" />
+            <circle cx="0" cy="0" r="15" fill="${f.c3}" />
+            <circle cx="0" cy="0" r="5" fill="#E6C265" />
+          `;
+        case 'tulip':
+          return `
+            <path d="M -21 5 C -25 -15, -8 -30, -2 -28 C 4 -12, -2 19, -12 24 C -19 24, -21 13, -21 5 Z" fill="${f.c2}" />
+            <path d="M 21 5 C 25 -15, 8 -30, 2 -28 C -4 -12, 2 19, 12 24 C 19 24, 21 13, 21 5 Z" fill="${f.c2}" />
+            <path d="M -15 7 C -16 -15, -5 -30, 0 -32 C 5 -30, 16 -15, 15 7 C 15 19, 8 25, 0 25 C -8 25, -15 19, -15 7 Z" fill="${f.c1}" />
+            <path d="M -6 5 C -6 -11, -2 -23, 0 -25 C 2 -23, 6 -11, 6 5 C 6 15, -6 15, -6 5 Z" fill="${f.c3}" opacity="0.55" />
+          `;
+        case 'sunflower':
+          let sp = '';
+          for (let i = 0; i < 16; i++) {
+            sp += `<ellipse cx="0" cy="-22" rx="5" ry="14" fill="${i % 2 === 0 ? f.c1 : f.c3}" transform="rotate(${i * 22.5})" />`;
+          }
+          return `${sp}<circle cx="0" cy="0" r="14" fill="${f.c2}" /><circle cx="0" cy="0" r="9.5" fill="#331E10" opacity="0.65" />`;
+        case 'lily':
+          let lp = '';
+          for (let i = 0; i < 6; i++) {
+            lp += `<path d="M 0 0 C -11 -13, -9 -30, 0 -35 C 9 -30, 11 -13, 0 0 Z" fill="${f.c1}" stroke="#E3D9C8" stroke-width="1" transform="rotate(${i * 60})" />`;
+          }
+          return `${lp}<circle cx="0" cy="0" r="5" fill="#D5DFB2" /><circle cx="-5" cy="-7" r="2" fill="#C98A32" /><circle cx="5" cy="-7" r="2" fill="#C98A32" /><circle cx="0" cy="8" r="2" fill="#C98A32" />`;
+        case 'lavender':
+          let buds = '';
+          for (let y = -28; y <= 12; y += 8) {
+            buds += `<ellipse cx="-5" cy="${y}" rx="5" ry="3.5" fill="${f.c1}" /><ellipse cx="5" cy="${y + 3}" rx="5" ry="3.5" fill="${f.c2}" />`;
+          }
+          return `<line x1="0" y1="-32" x2="0" y2="24" stroke="#5E735D" stroke-width="2.5" />${buds}`;
+        case 'eucalyptus':
+          let leaves = '';
+          for (let y = -24; y <= 14; y += 9) {
+            leaves += `<ellipse cx="-9" cy="${y}" rx="8" ry="5" transform="rotate(-20 -9 ${y})" fill="${f.c1}" /><ellipse cx="9" cy="${y + 3}" rx="8" ry="5" transform="rotate(20 9 ${y + 3})" fill="${f.c3}" />`;
+          }
+          return `<line x1="0" y1="-28" x2="0" y2="24" stroke="#5E735D" stroke-width="2" />${leaves}`;
+        case 'babys_breath':
+        default:
+          const dots = [
+            [-12, -16], [12, -14], [0, -24], [-18, 0], [18, 2], [0, 0], [-10, 14], [11, 13]
+          ];
+          return dots.map(([dx, dy]) => `
+            <line x1="0" y1="22" x2="${dx}" y2="${dy}" stroke="#7E967D" stroke-width="1.4" />
+            <circle cx="${dx}" cy="${dy}" r="5.5" fill="#FFFFFF" stroke="#E5DFD5" stroke-width="1" />
+            <circle cx="${dx}" cy="${dy}" r="1.8" fill="#E8D284" />
+          `).join('');
+      }
+    }
+
+    function renderAllBouquetSVGs() {
+      const studioBox = document.getElementById('studio-bouquet-wrapper');
+      if (studioBox) studioBox.innerHTML = buildBouquetSVGMarkup(true);
+
+      const recBox = document.getElementById('recipient-bouquet-canvas');
+      if (recBox) recBox.innerHTML = buildBouquetSVGMarkup(false);
+    }
+
+    function replayStudioBloom() {
+      const box = document.getElementById('studio-bouquet-wrapper');
+      box.classList.remove('bloom-trigger');
+      void box.offsetWidth;
+      box.classList.add('bloom-trigger');
+      spawnAmbientPetals(12);
+      playSingleChime(3);
+    }
+
+    function replayRecipientBloom() {
+      const box = document.getElementById('recipient-bouquet-canvas');
+      box.classList.remove('bloom-trigger');
+      void box.offsetWidth;
+      box.classList.add('bloom-trigger');
+      spawnAmbientPetals(20);
+      playSingleChime(5);
+    }
+
+    /* Dragging Kepala Bunga di Studio Canvas */
+    function startStemDrag(e, index) {
+      e.preventDefault();
+      draggingStemIndex = index;
+      window.addEventListener('pointermove', onStemDragMove);
+      window.addEventListener('pointerup', endStemDrag);
+    }
+
+    function onStemDragMove(e) {
+      if (draggingStemIndex === null) return;
+      const wrapper = document.getElementById('studio-bouquet-wrapper');
+      const rect = wrapper.getBoundingClientRect();
+      const relX = ((e.clientX - rect.left) / rect.width) * 400;
+      const relY = ((e.clientY - rect.top) / rect.height) * 430;
+
+      const clampedX = Math.max(95, Math.min(305, relX));
+      const clampedY = Math.max(85, Math.min(235, relY));
+
+      giftState.stems[draggingStemIndex].x = Math.round(clampedX);
+      giftState.stems[draggingStemIndex].y = Math.round(clampedY);
+      giftState.stems[draggingStemIndex].r = Math.round((clampedX - 200) * 0.24);
+
+      renderAllBouquetSVGs();
+    }
+
+    function endStemDrag() {
+      if (draggingStemIndex !== null) {
+        draggingStemIndex = null;
+        syncURLAndQR();
+      }
+      window.removeEventListener('pointermove', onStemDragMove);
+      window.removeEventListener('pointerup', endStemDrag);
+    }
+
+    /* =========================================================================
+       8. KELOPAK MELAYANG AMBIENT
+       ========================================================================= */
+    function spawnAmbientPetals(count = 16) {
+      const layer = document.getElementById('petal-layer');
+      const hues = ['#E89BA4', '#F5C6CC', '#FFFDF9', '#F5D58E', '#D5C3E8'];
+
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'ambient-petal';
+        const size = 10 + Math.random() * 12;
+        const left = Math.random() * 100;
+        const dur = 4.5 + Math.random() * 4;
+        const delay = Math.random() * 1.5;
+        const fill = hues[Math.floor(Math.random() * hues.length)];
+
+        p.style.left = `${left}vw`;
+        p.style.animationDuration = `${dur}s`;
+        p.style.animationDelay = `${delay}s`;
+        p.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${fill}"><path d="M12 2C7 7 4 12 6 17C8 21 14 22 17 18C20 14 17 7 12 2Z" opacity="0.88"/></svg>`;
+        layer.appendChild(p);
+        setTimeout(() => p.remove(), (dur + delay) * 1000 + 200);
+      }
+    }
+
+    /* =========================================================================
+       9. WEB AUDIO API: MUSIC BOX SYNTHESIZER & CRANK HANDLE
+       ========================================================================= */
+    const NOTE_FREQS = {
+      'F4': 349.23, 'G4': 392.00, 'A4': 440.00, 'Bb4': 466.16, 'B4': 493.88,
+      'C5': 523.25, 'D5': 587.33, 'E5': 659.25, 'F5': 698.46, 'F#5': 739.99,
+      'G5': 783.99, 'A5': 880.00, 'B5': 987.77
+    };
+
+    function ensureAudioCtx() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playMusicBoxNote(noteName) {
+      try {
+        ensureAudioCtx();
+        const freq = NOTE_FREQS[noteName] || 523.25;
+        const now = audioCtx.currentTime;
+
+        const osc = audioCtx.createOscillator();
+        const overtone = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now);
+
+        overtone.type = 'triangle';
+        overtone.frequency.setValueAtTime(freq * 2, now);
+
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.exponentialRampToValueAtTime(0.14, now + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0008, now + 1.45);
+
+        const overGain = audioCtx.createGain();
+        overGain.gain.setValueAtTime(0.025, now);
+        overGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
+
+        osc.connect(gain);
+        overtone.connect(overGain);
+        overGain.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(now);
+        overtone.start(now);
+        osc.stop(now + 1.5);
+        overtone.stop(now + 0.5);
+      } catch (e) {}
+    }
+
+    function playSingleChime(seed = 0) {
+      const notes = ['C5', 'E5', 'G5', 'B5', 'D5'];
+      playMusicBoxNote(notes[seed % notes.length]);
+    }
+
+    function startMelodyPlayback() {
+      stopMelodyPlayback();
+      const mel = MELODIES_DB[giftState.melody] || MELODIES_DB.nostalgia;
+      const intervalMs = Math.round((60 / mel.tempo) * 1000 * 0.75);
+
+      isMelodyPlaying = true;
+      updateMusicButtonsUI();
+
+      playMusicBoxNote(mel.notes[melodyStepIndex % mel.notes.length]);
+      melodyStepIndex++;
+
+      melodyTimer = setInterval(() => {
+        playMusicBoxNote(mel.notes[melodyStepIndex % mel.notes.length]);
+        melodyStepIndex++;
+        rotateCrankArm(30);
+      }, intervalMs);
+    }
+
+    function stopMelodyPlayback() {
+      if (melodyTimer) {
+        clearInterval(melodyTimer);
+        melodyTimer = null;
+      }
+      isMelodyPlaying = false;
+      updateMusicButtonsUI();
+    }
+
+    function toggleMelodyPreview() {
+      if (isMelodyPlaying) stopMelodyPlayback();
+      else startMelodyPlayback();
+    }
+
+    function toggleRecipientMusic() {
+      if (isMelodyPlaying) stopMelodyPlayback();
+      else startMelodyPlayback();
+    }
+
+    function updateMusicButtonsUI() {
+      const sBtn = document.getElementById('studio-music-btn');
+      if (sBtn) sBtn.textContent = isMelodyPlaying ? '⏸️' : '▶️';
+
+      const rIcon = document.getElementById('rec-music-icon');
+      const rText = document.getElementById('rec-music-text');
+      if (rIcon) rIcon.textContent = isMelodyPlaying ? '🎶' : '🎵';
+      if (rText) rText.textContent = isMelodyPlaying ? 'Melodi Aktif' : 'Putar Melodi';
+    }
+
+    function rotateCrankArm(deg = 45) {
+      crankAngle = (crankAngle + deg) % 360;
+      const arm = document.getElementById('crank-arm');
+      if (arm) arm.style.transform = `rotate(${crankAngle}deg)`;
+    }
+
+    function crankMusicBoxManual() {
+      const mel = MELODIES_DB[giftState.melody] || MELODIES_DB.nostalgia;
+      playMusicBoxNote(mel.notes[melodyStepIndex % mel.notes.length]);
+      melodyStepIndex++;
+      rotateCrankArm(45);
+    }
+
+    /* =========================================================================
+       10. KATALOG TEMA (TAB 2)
+       ========================================================================= */
+    function renderCatalogGallery() {
+      const grid = document.getElementById('catalog-showcase-grid');
+      const themes = [
+        {
+          opening: 'wax_seal', lock: 'none', wrap: 'kraft',
+          badge: 'Klasik & Paling Populer',
+          title: 'Segel Lilin & Kertas Kraft',
+          subtitle: 'Amplop krem bertekstur dengan segel lilin merah tua yang elegan.'
+        },
+        {
+          opening: 'blow_open', lock: 'music_box', wrap: 'blush',
+          badge: 'Interaktif Sensor Napas',
+          title: 'Tiup & Putar Kotak Musik',
+          subtitle: 'Tiup kelopak bunga dan putar engkol melodi untuk membuka buket blush.'
+        },
+        {
+          opening: 'fire_bloom', lock: 'none', wrap: 'velvet',
+          badge: 'Romantis Malam Hari',
+          title: 'Fire Bloom Midnight',
+          subtitle: 'Percikan kembang api emas di langit malam yang mekar menjadi bunga.'
+        },
+        {
+          opening: 'picnic', lock: 'petal_catch', wrap: 'sage',
+          badge: 'Estetik Piknik & Foto',
+          title: 'Polaroid Picnic Garden',
+          subtitle: 'Tangkap 5 kelopak jatuh di atas kain piknik sage dengan foto Polaroid.'
+        },
+        {
+          opening: 'ascii', lock: 'none', wrap: 'newsprint',
+          badge: 'Puisi Retro Terminal',
+          title: 'ASCII Poetry Bloom',
+          subtitle: 'Simbol botani digital yang bermetamorfosis menjadi buket koran vintage.'
+        },
+        {
+          opening: 'wax_seal', lock: 'music_box', wrap: 'cream',
+          badge: 'Edisi Ulang Tahun',
+          title: 'Ivory Satin & Melodi Waltz',
+          subtitle: 'Nuansa putih gading lembut disertai alunan waltz kotak musik.'
+        }
+      ];
+
+      grid.innerHTML = themes.map(t => {
+        const op = OPENINGS_DB[t.opening];
+        const lk = LOCKS_DB[t.lock];
+        return `
+          <div class="paper-sheet rounded-3xl p-6 border border-stone-200/80 flex flex-col justify-between hover:shadow-lg transition">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blush text-rosewood">${t.badge}</span>
+                <span class="text-xl">${op.icon}</span>
+              </div>
+              <h3 class="font-editorial text-2xl sm:text-3xl text-ink mb-2">${t.title}</h3>
+              <p class="text-xs text-muted leading-relaxed mb-4">${t.subtitle}</p>
+              <div class="flex flex-wrap gap-1.5 text-[11px] text-ink/75 mb-5">
+                <span class="px-2.5 py-1 rounded-full bg-paperDark">Pembuka: ${op.name}</span>
+                <span class="px-2.5 py-1 rounded-full bg-paperDark">Kunci: ${lk.name}</span>
+              </div>
+            </div>
+            <button type="button" onclick="applyCatalogTheme('${t.opening}', '${t.lock}', '${t.wrap}')"
+              class="w-full py-3 rounded-full bg-ink hover:bg-rosewood text-paper text-xs font-semibold transition">
+              Coba Tema Ini Sekarang →
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function applyCatalogTheme(opening, lock, wrap) {
+      giftState.opening = opening;
+      giftState.lock = lock;
+      giftState.wrap = wrap;
+      renderOpeningOptions();
+      renderLockOptions();
+      renderWrapPicker();
+      renderAllBouquetSVGs();
+      syncURLAndQR();
+      openRecipientFullscreen(true);
+    }
+
+    /* =========================================================================
+       11. RECIPIENT FULLSCREEN EXPERIENCE (OPENINGS + LOCKS + REVEAL)
+       ========================================================================= */
+    let isRecipientPreviewFromStudio = false;
+    let blowProgress = 0;
+    let blowInterval = null;
+    let micStream = null;
+
+    function openRecipientFullscreen(fromStudio = true) {
+      isRecipientPreviewFromStudio = fromStudio;
+      const overlay = document.getElementById('recipient-overlay');
+      overlay.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+
+      document.getElementById('exit-recipient-label').textContent = fromStudio
+        ? 'Kembali ke Studio'
+        : 'Buat Buket Baru';
+
+      // Reset tahapan
+      document.getElementById('stage-opening').classList.remove('hidden');
+      document.getElementById('stage-unlock').classList.add('hidden');
+      document.getElementById('stage-reveal').classList.add('hidden');
+
+      renderOpeningStage();
+    }
+
+    function closeRecipientFullscreen() {
+      stopMicBlowDetection();
+      stopMelodyPlayback();
+      document.getElementById('recipient-overlay').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    /* TAHAP 1: RENDER PEMBUKA SESUAI PILIHAN */
+    function renderOpeningStage() {
+      const stage = document.getElementById('stage-opening');
+      const toName = giftState.to.trim() || 'Kamu';
+      const fromName = giftState.from.trim() || 'Seseorang';
+
+      stage.className = 'min-h-screen flex flex-col items-center justify-center p-6 text-center relative transition-colors duration-700';
+
+      if (giftState.opening === 'blow_open') {
+        blowProgress = 0;
+        stage.innerHTML = `
+          <div class="max-w-md w-full paper-sheet rounded-[2rem] p-8 sm:p-10 border border-stone-200 shadow-xl">
+            <span class="text-4xl block mb-3">🌬️</span>
+            <p class="text-[11px] uppercase tracking-[0.22em] text-rosewood font-semibold mb-1">Kiriman untuk ${escapeXML(toName)}</p>
+            <h2 class="font-editorial text-4xl text-ink mb-2">Tiup Kelopak Bunganya</h2>
+            <p class="text-xs sm:text-sm text-muted mb-6">
+              Tiup ke arah mikrofon HP/laptopmu atau tahan tombol di bawah ini untuk menerbangkan kelopak dan membuka hadiah dari <strong>${escapeXML(fromName)}</strong>.
+            </p>
+
+            <!-- Meteran Napas -->
+            <div class="w-full h-3 bg-paperDark rounded-full overflow-hidden mb-5 border border-stone-200">
+              <div id="blow-meter-bar" class="h-full bg-rosewood transition-all duration-100" style="width: 0%"></div>
+            </div>
+
+            <button type="button"
+              onpointerdown="startHoldBlow()" onpointerup="stopHoldBlow()" onpointerleave="stopHoldBlow()"
+              class="w-full py-4 rounded-full bg-rosewood text-white text-sm font-semibold shadow-lg select-none active:scale-95 transition">
+              🌬️ Tahan untuk Meniup (atau Tiup Mic)
+            </button>
+          </div>
+        `;
+        startMicBlowDetection();
+      } else if (giftState.opening === 'fire_bloom') {
+        stage.classList.add('bg-[#171418]', 'text-paper');
+        let sparks = 0;
+        stage.innerHTML = `
+          <div id="fire-sky" onclick="triggerFireSpark(event)" class="max-w-md w-full rounded-[2rem] p-8 sm:p-10 border border-white/15 bg-white/5 backdrop-blur-md cursor-pointer select-none">
+            <span class="text-4xl block mb-3 animate-pulse">✨</span>
+            <p class="text-[11px] uppercase tracking-[0.22em] text-amber-300 font-semibold mb-1">Langit Malam untuk ${escapeXML(toName)}</p>
+            <h2 class="font-editorial text-4xl text-white mb-2">Fire Bloom</h2>
+            <p class="text-xs sm:text-sm text-stone-300 mb-6">
+              Ketuk layar 3 kali untuk menyalakan percikan cahaya emas yang akan bermekaran menjadi buket dari <strong>${escapeXML(fromName)}</strong>.
+            </p>
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-amber-200 text-xs font-semibold">
+              <span>Percikan Cahaya:</span>
+              <span id="spark-counter">0 / 3</span>
+            </div>
+          </div>
+        `;
+        window.triggerFireSpark = (ev) => {
+          sparks++;
+          playSingleChime(sparks);
+          spawnAmbientPetals(8);
+          const el = document.getElementById('spark-counter');
+          if (el) el.textContent = `${Math.min(3, sparks)} / 3`;
+          if (sparks >= 3) {
+            setTimeout(() => proceedAfterOpening(), 350);
+          }
+        };
+      } else if (giftState.opening === 'ascii') {
+        stage.innerHTML = `
+          <div class="max-w-md w-full bg-[#1E1C1A] text-emerald-300 rounded-[2rem] p-7 sm:p-9 border border-stone-700 shadow-2xl font-mono text-left">
+            <div class="flex items-center gap-1.5 mb-4">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+              <span class="text-[10px] text-stone-400 ml-2">flowers_bloom.sh</span>
+            </div>
+            <pre class="text-xs leading-relaxed text-amber-200/90 mb-4 overflow-x-auto">
+      _ _.-'\`'-._ _
+     ;.'________'.;
+    (  (  (@)  )  )
+     '.________.'
+         \\  |  /
+          \\ | /
+           \\|/   For: ${escapeXML(toName)}
+            |    From: ${escapeXML(fromName)}
+            </pre>
+            <p class="text-xs text-stone-300 mb-5">> Paket buket digital siap dimekarkan...</p>
+            <button type="button" onclick="proceedAfterOpening()"
+              class="w-full py-3.5 rounded-full bg-emerald-400 hover:bg-emerald-300 text-stone-950 text-xs font-bold transition">
+              [ Mekarkan Menjadi Lukisan ]
+            </button>
+          </div>
+        `;
+      } else if (giftState.opening === 'picnic') {
+        stage.innerHTML = `
+          <div class="max-w-md w-full paper-sheet rounded-[2rem] p-8 sm:p-10 border border-stone-200 shadow-xl relative">
+            <div class="w-28 h-28 mx-auto mb-5 polaroid-frame -rotate-3">
+              <img src="${giftState.polaroids[0]?.img || generateSamplePolaroidDataURL(1)}" class="w-full h-full object-cover" />
+            </div>
+            <p class="text-[11px] uppercase tracking-[0.22em] text-sage font-semibold mb-1">Polaroid Picnic</p>
+            <h2 class="font-editorial text-4xl text-ink mb-2">Hai, ${escapeXML(toName)}</h2>
+            <p class="text-xs sm:text-sm text-muted mb-6">
+              <strong>${escapeXML(fromName)}</strong> menyiapkan keranjang piknik berisi bunga segar dan kenangan manis untukmu.
+            </p>
+            <button type="button" onclick="proceedAfterOpening()"
+              class="w-full py-4 rounded-full bg-sage hover:bg-[#4B5C4A] text-white text-sm font-semibold shadow-md transition">
+              🧺 Buka Keranjang Piknik
+            </button>
+          </div>
+        `;
+      } else {
+        // Default: Wax Seal Envelope
+        stage.innerHTML = `
+          <div class="max-w-md w-full paper-sheet rounded-[2rem] p-8 sm:p-11 border border-stone-200/90 shadow-xl relative">
+            <p class="text-[11px] uppercase tracking-[0.24em] text-rosewood font-semibold mb-2">Kiriman Spesial Untuk</p>
+            <h2 class="font-editorial text-4xl sm:text-5xl text-ink mb-2">${escapeXML(toName)}</h2>
+            <p class="text-xs sm:text-sm text-muted mb-8">
+              Dari <strong>${escapeXML(fromName)}</strong> • Ketuk segel lilin di bawah untuk membuka buket bungamu.
+            </p>
+
+            <button type="button" onclick="proceedAfterOpening()"
+              class="wax-seal w-24 h-24 rounded-full mx-auto flex items-center justify-center text-paper font-editorial italic text-3xl hover:scale-105 active:scale-95 transition cursor-pointer">
+              F.
+            </button>
+            <p class="text-[11px] text-muted mt-4">Ketuk Segel Lilin</p>
+          </div>
+        `;
+      }
+    }
+
+    function startHoldBlow() {
+      if (blowInterval) return;
+      blowInterval = setInterval(() => {
+        blowProgress = Math.min(100, blowProgress + 5);
+        const bar = document.getElementById('blow-meter-bar');
+        if (bar) bar.style.width = `${blowProgress}%`;
+        if (blowProgress % 20 === 0) spawnAmbientPetals(4);
+        if (blowProgress >= 100) {
+          stopHoldBlow();
+          proceedAfterOpening();
+        }
+      }, 60);
+    }
+
+    function stopHoldBlow() {
+      if (blowInterval) {
+        clearInterval(blowInterval);
+        blowInterval = null;
+      }
+    }
+
+    async function startMicBlowDetection() {
+      try {
+        micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        ensureAudioCtx();
+        const source = audioCtx.createMediaStreamSource(micStream);
+        const analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+        source.connect(analyser);
+        const data = new Uint8Array(analyser.frequencyBinCount);
+
+        const checkBlow = () => {
+          if (!micStream) return;
+          analyser.getByteFrequencyData(data);
+          const avg = data.reduce((a, b) => a + b, 0) / data.length;
+          if (avg > 42) {
+            blowProgress = Math.min(100, blowProgress + 6);
+            const bar = document.getElementById('blow-meter-bar');
+            if (bar) bar.style.width = `${blowProgress}%`;
+            if (blowProgress >= 100) {
+              stopMicBlowDetection();
+              proceedAfterOpening();
+              return;
+            }
+          }
+          requestAnimationFrame(checkBlow);
+        };
+        checkBlow();
+      } catch (e) {
+        // Fallback halus ke tombol tahan jika mic ditolak
+      }
+    }
+
+    function stopMicBlowDetection() {
+      stopHoldBlow();
+      if (micStream) {
+        micStream.getTracks().forEach(t => t.stop());
+        micStream = null;
+      }
+    }
+
+    /* TAHAP 2: LOCK MINI-GAME (OPSIONAL) */
+    function proceedAfterOpening() {
+      stopMicBlowDetection();
+      playSingleChime(2);
+
+      if (giftState.lock === 'none') {
+        revealFinalBouquetStage();
+        return;
+      }
+
+      document.getElementById('stage-opening').classList.add('hidden');
+      const unlockStage = document.getElementById('stage-unlock');
+      unlockStage.classList.remove('hidden');
+
+      if (giftState.lock === 'music_box') {
+        let turns = 0;
+        unlockStage.innerHTML = `
+          <div class="max-w-md w-full paper-sheet rounded-[2rem] p-8 border border-stone-200 shadow-xl">
+            <span class="text-xs font-bold uppercase tracking-widest text-rosewood">Kotak Musik Terkunci</span>
+            <h3 class="font-editorial text-3xl sm:text-4xl text-ink mt-1 mb-2">Putar Engkol Kotak Musik</h3>
+            <p class="text-xs text-muted mb-6">Ketuk engkol emas 6 kali untuk memutar melodi dan membuka kunci buket.</p>
+
+            <button type="button" onclick="handleUnlockCrank()"
+              class="w-28 h-28 rounded-full mx-auto bg-gradient-to-br from-amber-100 to-amber-200 border-4 border-gold/70 shadow-lg flex items-center justify-center relative active:scale-95 transition">
+              <div id="unlock-crank-arm" class="w-14 h-2 bg-gold rounded-full origin-left ml-10 transition-transform duration-200"></div>
+              <span class="w-4 h-4 rounded-full bg-rosewood absolute"></span>
+            </button>
+
+            <p class="text-xs font-semibold text-rosewood mt-5" id="unlock-crank-count">Putaran: 0 / 6</p>
+          </div>
+        `;
+        window.handleUnlockCrank = () => {
+          turns++;
+          crankMusicBoxManual();
+          const arm = document.getElementById('unlock-crank-arm');
+          if (arm) arm.style.transform = `rotate(${turns * 60}deg)`;
+          const lbl = document.getElementById('unlock-crank-count');
+          if (lbl) lbl.textContent = `Putaran: ${Math.min(6, turns)} / 6`;
+          if (turns >= 6) {
+            setTimeout(() => revealFinalBouquetStage(), 300);
+          }
+        };
+      } else {
+        // Petal Catcher Mini-Game
+        let caught = 0;
+        unlockStage.innerHTML = `
+          <div class="max-w-md w-full paper-sheet rounded-[2rem] p-7 border border-stone-200 shadow-xl">
+            <span class="text-xs font-bold uppercase tracking-widest text-rosewood">Kunci Kelopak</span>
+            <h3 class="font-editorial text-3xl text-ink mt-1 mb-1">Tangkap 5 Kelopak Bunga</h3>
+            <p class="text-xs text-muted mb-4">Ketuk kelopak yang bermunculan di dalam kotak taman di bawah.</p>
+
+            <div id="petal-catch-arena" class="relative w-full h-56 bg-paper rounded-2xl border border-stone-200 overflow-hidden mb-4"></div>
+            <p class="text-xs font-bold text-rosewood" id="petal-catch-score">Terkumpul: 0 / 5</p>
+          </div>
+        `;
+
+        const arena = document.getElementById('petal-catch-arena');
+        const spawnTarget = () => {
+          if (caught >= 5 || !arena) return;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.textContent = ['🌸', '🌹', '🌷', '🌺'][Math.floor(Math.random() * 4)];
+          btn.className = 'absolute text-3xl transition-transform hover:scale-125 active:scale-90 cursor-pointer';
+          btn.style.left = `${12 + Math.random() * 72}%`;
+          btn.style.top = `${12 + Math.random() * 68}%`;
+          btn.onclick = () => {
+            caught++;
+            playSingleChime(caught);
+            btn.remove();
+            const sc = document.getElementById('petal-catch-score');
+            if (sc) sc.textContent = `Terkumpul: ${caught} / 5`;
+            if (caught >= 5) {
+              setTimeout(() => revealFinalBouquetStage(), 250);
+            } else {
+              spawnTarget();
+            }
+          };
+          arena.appendChild(btn);
+        };
+        spawnTarget();
+        spawnTarget();
+      }
+    }
+
+    /* TAHAP 3: REVEAL BUKET MEKAR, POLAROID & SURAT */
+    function revealFinalBouquetStage() {
+      document.getElementById('stage-opening').classList.add('hidden');
+      document.getElementById('stage-unlock').classList.add('hidden');
+
+      const reveal = document.getElementById('stage-reveal');
+      reveal.classList.remove('hidden');
+
+      // Populate text
+      document.getElementById('reveal-to-name').textContent = giftState.to.trim() || 'Seseorang yang Istimewa';
+      document.getElementById('reveal-from-name').textContent = giftState.from.trim() || 'Seseorang';
+      document.getElementById('reveal-letter-title').textContent = giftState.title.trim() || 'Sebuah bunga kecil untuk hari yang indah';
+      document.getElementById('reveal-letter-body').textContent = giftState.note.trim() || 'Semoga setiap kelopak yang mekar di sini mengingatkanmu betapa berharganya dirimu.';
+      document.getElementById('reveal-melody-title').textContent = MELODIES_DB[giftState.melody].name;
+
+      // Voice Note button
+      const vnBtn = document.getElementById('reveal-vn-btn');
+      if (recordedAudioURL) vnBtn.classList.remove('hidden');
+      else vnBtn.classList.add('hidden');
+
+      // Polaroids
+      const polGrid = document.getElementById('reveal-polaroids-grid');
+      if (giftState.polaroids.length > 0) {
+        polGrid.innerHTML = giftState.polaroids.map((p, i) => {
+          const rot = i === 0 ? '-3deg' : i === 1 ? '2.5deg' : '-1.5deg';
+          const src = p.img || generateSamplePolaroidDataURL(p.sampleSeed || i + 1);
+          return `
+            <div class="polaroid-frame w-48 sm:w-52 rounded-lg" style="transform: rotate(${rot});">
+              <img src="${src}" alt="Kenangan" class="w-full aspect-square object-cover rounded-xs" />
+              <p class="font-hand text-xl text-ink text-center mt-2">${escapeXML(p.caption)}</p>
+            </div>
+          `;
+        }).join('');
+      } else {
+        polGrid.innerHTML = '';
+      }
+
+      renderAllBouquetSVGs();
+      replayRecipientBloom();
+      startMelodyPlayback();
+    }
+
+    function replyWithNewBouquet() {
+      closeRecipientFullscreen();
+      switchTab('studio');
+      showToast('Rangkai buket balasanmu di studio 💐', '✨');
+    }
+
+    /* =========================================================================
+       12. TAMANKU (PERSONAL GARDEN DRAWER - LOCALSTORAGE)
+       ========================================================================= */
+    function getSavedGardenList() {
+      try {
+        return JSON.parse(localStorage.getItem('flowers_digital_garden_v1') || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveCurrentGiftToGarden() {
+      const list = getSavedGardenList();
+      const entry = {
+        id: Date.now(),
+        date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+        to: giftState.to || 'Kamu',
+        from: giftState.from || 'Seseorang',
+        title: giftState.title || 'Buket Bunga Digital',
+        hash: encodeGiftHash(),
+        flowersCount: giftState.stems.length
+      };
+      list.unshift(entry);
+      localStorage.setItem('flowers_digital_garden_v1', JSON.stringify(list.slice(0, 20)));
+      updateGardenBadge();
+      showToast('Buket berhasil disimpan ke Tamanku 🌿', '💐');
+    }
+
+    function updateGardenBadge() {
+      const badge = document.getElementById('garden-badge');
+      if (badge) badge.textContent = getSavedGardenList().length;
+    }
+
+    function renderGardenDrawer() {
+      const grid = document.getElementById('garden-grid');
+      const list = getSavedGardenList();
+
+      if (list.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full paper-sheet rounded-3xl p-10 text-center border border-stone-200/80">
+            <span class="text-4xl block mb-3">🌱</span>
+            <h3 class="font-editorial text-3xl text-ink mb-2">Tamanmu Masih Kosong</h3>
+            <p class="text-xs sm:text-sm text-muted max-w-md mx-auto mb-5">
+              Rangkai buket pertamamu atau simpan buket yang kamu terima agar tetap mekar di sini selamanya.
+            </p>
+            <button type="button" onclick="switchTab('studio')"
+              class="px-5 py-2.5 rounded-full bg-rosewood text-white text-xs font-semibold">
+              Mulai Merangkai
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = list.map(item => `
+        <div class="paper-sheet rounded-3xl p-5 border border-stone-200/80 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-[11px] text-muted mb-2">
+              <span>${item.date}</span>
+              <span class="px-2 py-0.5 rounded-full bg-blush text-rosewood font-semibold">${item.flowersCount} Tangkai</span>
+            </div>
+            <h3 class="font-editorial text-2xl text-ink mb-1">${escapeXML(item.title)}</h3>
+            <p class="text-xs text-muted mb-4">Untuk <strong>${escapeXML(item.to)}</strong> • Dari <strong>${escapeXML(item.from)}</strong></p>
+          </div>
+          <div class="flex gap-2">
+            <button type="button" onclick="openGardenItem('${item.hash}')"
+              class="flex-1 py-2.5 rounded-full bg-ink hover:bg-rosewood text-paper text-xs font-semibold transition">
+              Buka Hadiah
+            </button>
+            <button type="button" onclick="deleteGardenItem(${item.id})"
+              class="px-3 py-2.5 rounded-full bg-paperDark hover:bg-rose-100 text-muted hover:text-rosewood text-xs font-semibold">
+              Hapus
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openGardenItem(hashStr) {
+      window.location.hash = hashStr;
+      loadGiftFromURLHash();
+      syncFormFromState();
+      renderAllBouquetSVGs();
+      openRecipientFullscreen(false);
+    }
+
+    function deleteGardenItem(id) {
+      const next = getSavedGardenList().filter(x => x.id !== id);
+      localStorage.setItem('flowers_digital_garden_v1', JSON.stringify(next));
+      updateGardenBadge();
+      renderGardenDrawer();
+    }
+
+    /* =========================================================================
+       13. VINTAGE PHOTOBOOTH STUDIO (WEBCAM / UPLOAD / FILTER / PNG EXPORT)
+       ========================================================================= */
+    function fillSampleBoothPhotos(silent = false) {
+      boothPhotos = [1, 2, 3].map(seed => {
+        const img = new Image();
+        img.src = generateSamplePolaroidDataURL(seed);
+        img.onload = () => renderPhotoboothCanvas();
+        return img;
+      });
+      if (!silent) showToast('Contoh foto estetik dimuat ✨', '📸');
+    }
+
+    function handlePhotoboothUpload(e) {
+      const files = Array.from(e.target.files || []).slice(0, 3);
+      if (!files.length) return;
+
+      files.forEach((file, idx) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            boothPhotos[idx] = img;
+            renderPhotoboothCanvas();
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+      showToast(`${files.length} foto dimuat ke strip!`, '📸');
+    }
+
+    async function startPhotoboothCamera() {
+      try {
+        boothStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+        const video = document.getElementById('booth-video');
+        video.srcObject = boothStream;
+        document.getElementById('webcam-box').classList.remove('hidden');
+      } catch (e) {
+        showToast('Kamera tidak tersedia, silakan unggah foto dari galeri', '📷');
+      }
+    }
+
+    function stopPhotoboothCamera() {
+      if (boothStream) {
+        boothStream.getTracks().forEach(t => t.stop());
+        boothStream = null;
+      }
+      document.getElementById('webcam-box').classList.add('hidden');
+    }
+
+    async function captureBoothSequence() {
+      const video = document.getElementById('booth-video');
+      const cd = document.getElementById('booth-countdown');
+      if (!video || !boothStream) return;
+
+      for (let slot = 0; slot < 3; slot++) {
+        cd.classList.remove('hidden');
+        for (let t = 3; t >= 1; t--) {
+          cd.textContent = t;
+          await new Promise(r => setTimeout(r, 650));
+        }
+        cd.textContent = '📸';
+        playSingleChime(slot + 2);
+
+        const snap = document.createElement('canvas');
+        snap.width = 400;
+        snap.height = 300;
+        const sctx = snap.getContext('2d');
+        sctx.translate(400, 0);
+        sctx.scale(-1, 1);
+        sctx.drawImage(video, 0, 0, 400, 300);
+
+        const img = new Image();
+        img.src = snap.toDataURL('image/png');
+        await new Promise(r => { img.onload = r; });
+        boothPhotos[slot] = img;
+        renderPhotoboothCanvas();
+        await new Promise(r => setTimeout(r, 350));
+      }
+      cd.classList.add('hidden');
+      stopPhotoboothCamera();
+      showToast('3 foto strip selesai dijepret! ✨', '🎞️');
+    }
+
+    function setBoothFilter(f) {
+      boothFilter = f;
+      document.querySelectorAll('.bfilter-btn').forEach(btn => {
+        if (btn.dataset.bfilter === f) {
+          btn.classList.add('border-rosewood', 'bg-blush/50', 'text-ink');
+          btn.classList.remove('border-stone-200', 'bg-paper', 'text-muted');
+        } else {
+          btn.classList.remove('border-rosewood', 'bg-blush/50', 'text-ink');
+          btn.classList.add('border-stone-200', 'bg-paper', 'text-muted');
+        }
+      });
+      renderPhotoboothCanvas();
+    }
+
+    function setBoothPaper(bg, fg) {
+      boothBgColor = bg;
+      boothTextColor = fg;
+      renderPhotoboothCanvas();
+    }
+
+    function renderPhotoboothCanvas() {
+      const canvas = document.getElementById('photobooth-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      // Kertas Strip
+      ctx.fillStyle = boothBgColor;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Bingkai halus
+      ctx.strokeStyle = 'rgba(140, 63, 71, 0.25)';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+
+      // Filter CSS string untuk Canvas 2D
+      const filterMap = {
+        warm: 'sepia(0.18) saturate(1.15) contrast(1.04) brightness(1.03)',
+        bw: 'grayscale(1) contrast(1.2)',
+        sepia: 'sepia(0.65) contrast(1.05)',
+        rose: 'sepia(0.15) hue-rotate(-15deg) saturate(1.2) brightness(1.04)'
+      };
+
+      const frameW = 304;
+      const frameH = 224;
+      const startX = 28;
+      let startY = 30;
+
+      for (let i = 0; i < 3; i++) {
+        ctx.save();
+        ctx.fillStyle = '#EAE4DA';
+        ctx.fillRect(startX, startY, frameW, frameH);
+
+        const img = boothPhotos[i];
+        if (img && img.complete) {
+          ctx.filter = filterMap[boothFilter] || 'none';
+          // Center crop cover
+          const imgRatio = img.width / img.height;
+          const boxRatio = frameW / frameH;
+          let sx = 0, sy = 0, sw = img.width, sh = img.height;
+          if (imgRatio > boxRatio) {
+            sw = img.height * boxRatio;
+            sx = (img.width - sw) / 2;
+          } else {
+            sh = img.width / boxRatio;
+            sy = (img.height - sh) / 2;
+          }
+          ctx.drawImage(img, sx, sy, sw, sh, startX, startY, frameW, frameH);
+        }
+        ctx.restore();
+        startY += frameH + 22;
+      }
+
+      // Footer Branding & Tanggal
+      ctx.fillStyle = boothTextColor;
+      ctx.font = 'italic 30px Georgia, serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Flowers.', canvas.width / 2, 804);
+
+      const cap = document.getElementById('booth-caption-input')?.value || 'Flowers. Studio • 2026';
+      ctx.font = '500 12px "Plus Jakarta Sans", sans-serif';
+      ctx.globalAlpha = 0.75;
+      ctx.fillText(cap, canvas.width / 2, 828);
+      ctx.globalAlpha = 1;
+    }
+
+    function downloadPhotoboothStrip() {
+      const canvas = document.getElementById('photobooth-canvas');
+      const link = document.createElement('a');
+      link.download = `Flowers-Photobooth-${Date.now()}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showToast('Photo strip berhasil diunduh! 🎞️', '⬇️');
+    }
+
+    function attachStripToBouquet() {
+      const canvas = document.getElementById('photobooth-canvas');
+      const dataUrl = canvas.toDataURL('image/png');
+      if (giftState.polaroids.length >= 3) giftState.polaroids.shift();
+      compressGiftImage(dataUrl, 220, 0.45).then(compactImage => {
+        giftState.polaroids.push({
+        img: compactImage,
+        caption: 'Photobooth kita 🎞️',
+        sampleSeed: 1
+      });
+        renderPolaroidEditor();
+        syncURLAndQR();
+        switchTab('studio');
+        switchKeepsakeSubtab('polaroid');
+        showToast('Strip foto ditambahkan ke dalam buket! 💐', '📸');
+      });
+    }
+
+    /* =========================================================================
+       14. CLIPBOARD & NOTIFIKASI TOAST
+       ========================================================================= */
+    function copyTextSafe(str) {
+      const el = document.createElement('textarea');
+      el.value = str;
+      el.style.position = 'fixed';
+      el.style.opacity = '0';
+      document.body.appendChild(el);
+      el.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(el);
+    }
+
+    function copyGiftURL() {
+      const url = window.location.href.split('#')[0] + encodeGiftHash();
+      copyTextSafe(url);
+      showToast('Link hadiah bunga berhasil disalin! 🔗', '💌');
+    }
+
+    function copyWhatsAppText() {
+      const url = window.location.href.split('#')[0] + encodeGiftHash();
+      const rec = giftState.to.trim() ? `Untuk ${giftState.to.trim()},\n` : '';
+      const title = giftState.title.trim() ? `"${giftState.title.trim()}"\n\n` : '';
+      const msg = `${rec}${title}Aku merangkai buket bunga digital & kenangan khusus untukmu. Buka dan mekarkan bunganya di sini:\n${url}`;
+      copyTextSafe(msg);
+      showToast('Pesan & link siap ditempel ke WhatsApp/DM!', '💌');
+    }
+
+    let toastTimer = null;
+    function showToast(text, emoji = '🌸') {
+      const box = document.getElementById('toast-box');
+      document.getElementById('toast-text').textContent = text;
+      document.getElementById('toast-emoji').textContent = emoji;
+
+      box.classList.remove('opacity-0', 'translate-y-4');
+      box.classList.add('opacity-100', 'translate-y-0');
+
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        box.classList.remove('opacity-100', 'translate-y-0');
+        box.classList.add('opacity-0', 'translate-y-4');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
